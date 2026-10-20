@@ -2,3 +2,56 @@
 Tue Oct 20 06:27:33 PM PKT 2026
   probe: reused cached crops (437 images)
   probe: embedding 437 crops in batches of 32
+  probe: embedded in 935s
+gallery: 23 ids | probes: 437/437 detected
+
+==============================================================
+RESULT [adaface_v2]
+  n_probes_detected        437.0000
+  n_probes_total           437.0000
+  fte_rate                 0.0000
+  rank1_detected           0.9886
+  end_to_end_accuracy      0.9886
+  tar_at_far_1e-3          0.9817
+  tar_at_far_1e-4          0.3524
+  eer                      0.0046
+  auc                      0.9996
+  genuine_mean             0.8089
+  impostor_mean            0.0415
+  score_gap                0.7674
+  precision/recall/F1 @0.4: 0.9457 / 0.9954 / 0.9699
+  PAD BPCER @0.05: 0.0435 (n=437, mean live prob 0.823)
+  worst identity: {'id': 'hamza_shehbaz', 'n_probes': 12, 'rank1': 0.5833333333333334, 'mean_genuine': 0.6391512155532837}
+  per-quality: {np.str_('ok'): {'n': 216, 'rank1': 0.9814814814814815}, 'yaw': {'n': 25, 'rank1': 1.0}, 'blur': {'n': 92, 'rank1': 0.9891304347826086}, np.str_('ok_padded'): {'n': 80, 'rank1': 1.0}, 'low': {'n': 24, 'rank1': 1.0}}
+saved -> results/eval_adaface_v2.json
+=== AdaFace IR-50 (v2 crops)
+Tue Oct 20 06:43:29 PM PKT 2026
+  gallery: reused cached crops (849 images)
+  gallery: embedding 848 crops in batches of 32
+  gallery: embedded in 115s
+  probe: reused cached crops (437 images)
+  probe: embedding 437 crops in batches of 32
+  probe: embedded in 63s
+gallery: 23 ids | probes: 437/437 detected
+
+==============================================================
+RESULT [adaface50_v2]
+  n_probes_detected        437.0000
+  n_probes_total           437.0000
+  fte_rate                 0.0000
+  rank1_detected           0.9863
+  end_to_end_accuracy      0.9863
+  tar_at_far_1e-3          0.9771
+  tar_at_far_1e-4          0.3341
+  eer                      0.0046
+  auc                      0.9996
+  genuine_mean             0.7957
+  impostor_mean            0.0456
+  score_gap                0.7500
+  precision/recall/F1 @0.4: 0.9315 / 0.9954 / 0.9624
+  PAD BPCER @0.05: 0.0435 (n=437, mean live prob 0.823)
+  worst identity: {'id': 'hamza_shehbaz', 'n_probes': 12, 'rank1': 0.5833333333333334, 'mean_genuine': 0.6348235011100769}
+  per-quality: {np.str_('ok'): {'n': 216, 'rank1': 0.9814814814814815}, 'yaw': {'n': 25, 'rank1': 1.0}, 'blur': {'n': 92, 'rank1': 0.9891304347826086}, np.str_('ok_padded'): {'n': 80, 'rank1': 0.9875}, 'low': {'n': 24, 'rank1': 1.0}}
+saved -> results/eval_adaface50_v2.json
+ALL DONE
+Tue Oct 20 06:46:34 PM PKT 2026

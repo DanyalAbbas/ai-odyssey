@@ -466,27 +466,36 @@ whose failures are analysed in §9.
 All four embedders were run on the **same corrected crops**, so this isolates the
 recogniser. Rank-1 is on 437 probes / 23 identities.
 
-| Model | Rank-1 | 95% CI | TAR@1e-3 | TAR@1e-4 | EER | AUC | Impostor mean |
-|---|---|---|---|---|---|---|---|
-| buffalo_l R50 | 98.63 % | [97.5, 99.5] | 97.71 | 29.29 | 0.69 % | 0.9995 | 0.0594 |
-| antelopev2 R100 | **98.86 %** | [97.7, 99.8] | 97.94 | **35.24** | **0.46 %** | 0.9996 | 0.0542 |
-| AdaFace IR-101 | TBD | | TBD | TBD | TBD | TBD | TBD |
-| AdaFace IR-50 | TBD | | TBD | TBD | TBD | TBD | TBD |
+| Model | Rank-1 | 95% CI | TAR@1e-3 | TAR@1e-4 | EER | AUC | Impostor mean | Genuine−impostor gap |
+|---|---|---|---|---|---|---|---|---|
+| buffalo_l R50 | 98.63 % | [97.5, 99.5] | 97.71 | 29.29 | 0.69 % | 0.9995 | 0.0594 | 0.737 |
+| antelopev2 R100 | **98.86 %** | [97.7, 99.8] | 97.94 | 35.24 | 0.46 % | 0.9996 | 0.0542 | 0.761 |
+| AdaFace IR-101 | **98.86 %** | [97.7, 99.8] | **98.17** | **35.24** | 0.46 % | 0.9996 | **0.0415** | **0.767** |
+| AdaFace IR-50 | 98.63 % | [97.5, 99.5] | 97.71 | 33.41 | 0.46 % | 0.9996 | 0.0456 | 0.750 |
+| Mean fusion of all four | 98.86 % | — | 97.94 | — | 0.46 % | — | — | — |
 
-**The comparison is a tie, and is reported as one.** On the paired probes,
-buffalo and antelope agree on 431 correct probes; antelope fixes exactly one and
-breaks none (exact McNemar p = 1.000, bootstrap Δ = +0.23 pts, 95 % CI
-[+0.00, +0.69]). A single probe is not evidence of a better model.
+**The comparison is a tie, and the error structure proves it.** Across the four
+models there are exactly **six** probes on which *any* model fails; no model has a
+single success outside that set. Buffalo and IR-50 fail all six, antelope and
+IR-101 fail five — the five are the father/son confusions (§9), and the sixth is
+the low-similarity Asif Zardari probe. So the entire spread between "worst" and
+"best" here is one borderline probe, not a capability difference.
 
-**Score-level fusion was tested and rejected.** Averaging the cosine scores of
-all four embedders gives 98.17 % — *below* the best single model, because the
-residual errors are correlated (the same five kin-confusion probes fail for every
-model). Fusion only helps when base models fail on different inputs.
+**Fusion adds nothing for the same reason.** Averaging the four cosine scores
+gives 98.86 % — identical to the best single model, not better. Fusion pays only
+when base models fail on different inputs; here the failures are nested.
 
-**Ship decision:** R50. It ties on accuracy, its two ONNX files are 184 MB of
-the 435 MB bundle, and it is ~3× faster on CPU. R100 is available via `--model antelopev2` for a
-latency-tolerant deployment that wants the extra score margin (TAR@1e-4 35.2 %
-vs 29.3 %, and a lower impostor mean: 0.054 vs 0.059).
+**What the models *do* differ in is score geometry,** and that is the real basis
+for choosing between them. AdaFace IR-101 separates genuine from impostor scores
+best (impostor mean 0.0415 against buffalo's 0.0594; gap 0.767 against 0.737),
+which is why it has the highest TAR@1e-3 (98.17 %) despite the same rank-1.
+For a verification system operating at a strict FAR, that margin is worth more
+than a rank-1 tie.
+
+**Ship decision:** R50. It ties on rank-1, its two ONNX files are 184 MB of the
+435 MB bundle, and it is ~3× faster on CPU. IR-101 is the better choice for a
+latency-tolerant *verification* deployment (best score separation); antelopev2 is
+available via `--model antelopev2` but its weights are not bundled.
 
 ---
 
@@ -668,9 +677,9 @@ already at 97.3 %.
 | Ablation | Rank-1 | Δ | Note |
 |---|---|---|---|
 | Full system (R50) | 98.63 % | — | |
-| Embedder → antelopev2 R100 | see §6.5 | ~0 | 4× slower |
-| Embedder → AdaFace IR-101 | see §6.5 | ~0 | best score margin |
-| Score fusion of 4 models | 98.17 % | −0.46 | errors are correlated, no gain |
+| Embedder → antelopev2 R100 | 98.86 % | +0.23 | 4× slower; one probe |
+| Embedder → AdaFace IR-101 | 98.86 % | +0.23 | best score margin |
+| Score fusion of 4 models | 98.86 % | 0.00 | errors nested; no gain over the best single model |
 | Liveness gate on @0.02 | 96.34 % | −2.29 | 2.3 % of genuine faces rejected |
 | Liveness gate on @0.05 | 94.28 % | −4.35 | |
 | No reflected-border retry | 73.0 % | −25.6 | the FTE ablation |

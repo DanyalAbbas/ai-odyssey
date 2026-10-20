@@ -62,14 +62,20 @@ repo's layout. When changing runtime code, edit `src/` and copy across.
 ## Reproducing
 
 ```bash
-uv venv .venv && source .venv/bin/activate
-uv pip install -r requirements.txt
+uv sync                                     # runtime deps only
+uv sync --extra dev                         # + matplotlib/onnx/torch for figures and training
 
-python src/evaluate_pak.py --model baseline --pad --pad-threshold 0.05 \
+uv run python submit/predict.py --gallery bench/gallery --probe bench/probe \
+  --output preds.csv                        # the submission, run in place
+
+uv run python src/evaluate_pak.py --model baseline --pad --pad-threshold 0.05 \
   --gallery data/pak_fig/gallery --probe data/pak_fig/probe \
   --output results/eval_buffalo_v2.json     # ~15 min CPU
 ./experiments/run_final.sh                  # occlusion / ablations / FTE suite
 ```
+
+The repository is the deliverable — `submit/predict.py` runs from the repo root
+without copying anything. `submit.zip` is only for portals that want one file.
 
 The benchmark data is the public *Pakistani Public Figures* set (CC0); the raw
 images are not committed (see `.gitignore`) but every source and licence is listed

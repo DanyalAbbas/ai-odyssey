@@ -8,25 +8,30 @@ never see.
 
 | # | Artefact | Contents | Due |
 |---|---|---|---|
-| 1 | `submit/` (or `submit.zip`) | `predict.py` entry point, vendored ONNX weights, `Dockerfile`, `requirements.txt`, `README.md`, `selftest.py` | Oct 22 |
+| 1 | the **repo** (or `submit/`, or `submit.zip`) | `submit/predict.py`, vendored ONNX weights, `Dockerfile`, `requirements.txt`, `selftest.py` | Oct 22 |
 | 2 | `REPORT.pdf` | The written report | Oct 22 |
 | 3 | `predictions.csv` (local) | Proof the package works; not the scored artefact | — |
 
 ## The contract
 
+The repository itself is runnable — no unzipping, no copying:
+
 ```bash
-pip install -r requirements.txt
-python predict.py --gallery <gallery_dir> --probe <probe_dir> --output predictions.csv
+uv sync                                     # or: uv venv && uv pip install -r requirements.txt
+uv run python submit/predict.py --gallery <gallery_dir> --probe <probe_dir> --output predictions.csv
 ```
+
+`submit.zip` exists only for a portal that wants a single upload; it contains the
+same `submit/` folder plus its weights, so it runs standalone.
 
 Also supported, in case their protocol differs:
 
 ```bash
 # flat gallery + index CSV (file,id)
-python predict.py --gallery imgs/ --gallery-index index.csv --probe probe/
+uv run python submit/predict.py --gallery imgs/ --gallery-index index.csv --probe probe/
 
 # 1:1 verification
-python predict.py --pairs pairs.csv --output predictions.csv
+uv run python submit/predict.py --pairs pairs.csv --output predictions.csv
 ```
 
 No network access at runtime. Model weights are inside the package.
@@ -57,7 +62,7 @@ rather than being dropped.
 ## Verify before sending
 
 ```bash
-cd submit && python selftest.py
+uv run python submit/selftest.py
 ```
 
 Expected: 2 rows, both matched, `SELFTEST PASSED`.

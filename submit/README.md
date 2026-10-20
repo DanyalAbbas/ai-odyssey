@@ -6,14 +6,19 @@ this package is the thing they run.
 ## Run it
 
 ```bash
-pip install -r requirements.txt
+uv venv
+uv pip install -r requirements.txt          # insightface needs build-essential + cython3
 
 # 1:N identification
-python predict.py --gallery <gallery_dir> --probe <probe_dir> --output predictions.csv
+uv run python predict.py --gallery <gallery_dir> --probe <probe_dir> --output predictions.csv
 
 # 1:1 verification
-python predict.py --pairs <pairs.csv> --output predictions.csv
+uv run python predict.py --pairs <pairs.csv> --output predictions.csv
 ```
+
+If this folder sits inside the repository, you can run it from the repo root with
+`uv run python submit/predict.py ...` — nothing needs to be copied or unzipped.
+Standalone (unzipped on its own), add `--no-project` to `uv run`.
 
 Nothing is downloaded at runtime. Model weights are in `models/`.
 

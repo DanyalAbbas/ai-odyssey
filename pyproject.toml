@@ -1,0 +1,26 @@
+[project]
+name = "techfest-face-recognition"
+version = "1.0.0"
+description = "Pakistani-context face recognition pipeline: SCRFD + ArcFace/AdaFace, with liveness and veiled-face evaluation"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy==2.5.4",
+    "opencv-python-headless>=5.0.0.93,<6",
+    "onnxruntime==1.31.0",
+    "insightface==2.1",
+    "scikit-image==0.26.0",
+    "pillow==13.0.0",
+]
+
+[project.optional-dependencies]
+# Only needed to regenerate figures, export the PAD weights, or rerun the
+# Kaggle fine-tune. Inference and the benchmark harness do not use these.
+dev = [
+    "matplotlib>=3.8",
+    "onnx==1.23.2",
+    "torch>=2.6",
+]
+
+[tool.uv]
+# insightface builds a small Cython extension at install time.
+# On Debian/Ubuntu: apt-get install build-essential cython3

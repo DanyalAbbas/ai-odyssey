@@ -3,3 +3,10 @@ Tue Oct 20 06:27:29 PM PKT 2026
   gallery: cropping 600 images (detection is the slow stage)
 /home/danyal-abbas/codingstuff/Python Programming/ai-odyssey/.venv/lib/python3.13/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
   tform.estimate(lmk, dst)
+    200/600 cropped (443s)
+    400/600 cropped (715s)
+    600/600 cropped (1011s)
+  gallery: crops cached in 1014s
+  gallery: embedding 600 crops in batches of 32
+  gallery: embedded in 202s
+  probe_masked: cropping 400 images (detection is the slow stage)
