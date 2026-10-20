@@ -40,6 +40,10 @@ runtime.
 | `src/` | All pipeline, evaluation and experiment code (see below) |
 | `results/` | One JSON + score matrix per run, figures in `results/figures/` |
 | `experiments/` | Reproducible drivers (`run_final.sh`, `run_v2_models.sh`) and their logs |
+
+`submit/` is deliberately self-contained: it carries its own copies of
+`inference.py`, `pad.py` and `imgio.py` so the package has no dependency on this
+repo's layout. When changing runtime code, edit `src/` and copy across.
 | `src/inference.py` | Production pipeline (PAD → detect → align → quality → embed → match) |
 | `src/evaluate_pak.py` | Benchmark harness: embedder backends, crop/embedding caches, ablations, bootstrap CIs |
 | `src/pad.py`, `src/imgio.py` | Liveness ensemble, and EXIF-aware image loading |
