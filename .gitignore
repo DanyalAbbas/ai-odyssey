@@ -1,0 +1,23 @@
+# Raw datasets and derived caches: reproduced from the public sources in
+# REPORT.md §3.1, not redistributed here.
+data/
+contacts/
+
+# Vendored weights ship as a separate zip (435 MB); fetching them into git would
+# bloat the repo without adding anything the checksums in §12.4 do not already pin.
+submit/models/
+submit/*.zip
+submit/predicted*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
+*.swp
+
+# Weights (checksums in REPORT.md §12.4); the submission carries its own copies
+models/
+submit.zip

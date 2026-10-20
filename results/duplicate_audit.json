@@ -1,0 +1,64 @@
+{
+  "threshold": 0.985,
+  "n_gallery_images": 848,
+  "n_probe_images": 437,
+  "n_flagged_pairs": 2,
+  "n_identities_affected": 2,
+  "top_similarities": [
+    {
+      "probe": "khawaja_asif/khawaja_asif_icrawler_1778784321588_a608fe8b.jpg",
+      "cosine": 0.9897951483726501
+    },
+    {
+      "probe": "benazir_bhutto/benazir_bhutto_icrawler_1778781793463_13669338.jpg",
+      "cosine": 0.9871848821640015
+    },
+    {
+      "probe": "asad_umar/asad_umar_icrawler_1778786064995_c6d42feb.jpg",
+      "cosine": 0.9845689535140991
+    },
+    {
+      "probe": "shehbaz_sharif/shehbaz_sharif_icrawler_1778785390448_6da47955.jpg",
+      "cosine": 0.9837874174118042
+    },
+    {
+      "probe": "pervez_musharraf/pervez_musharraf_icrawler_1778830106863_37cfd009.jpg",
+      "cosine": 0.9837045669555664
+    },
+    {
+      "probe": "yousaf_raza_gillani/yousaf_raza_gillani_icrawler_1778783029944_7af693bc.jpg",
+      "cosine": 0.9818081855773926
+    },
+    {
+      "probe": "sheikh_rashid_ahmed/sheikh_rashid_ahmed_icrawler_1778829476953_4430cc1f.jpg",
+      "cosine": 0.9808314442634583
+    },
+    {
+      "probe": "shehbaz_sharif/shehbaz_sharif_icrawler_1778785511704_695c54da.jpg",
+      "cosine": 0.9802345037460327
+    },
+    {
+      "probe": "pervez_musharraf/pervez_musharraf_icrawler_1778830075373_afe0a919.jpg",
+      "cosine": 0.9794365763664246
+    },
+    {
+      "probe": "hina_rabbani_khar/hina_rabbani_khar_icrawler_1778782366379_4fc84b8f.jpg",
+      "cosine": 0.9782390594482422
+    }
+  ],
+  "flagged": [
+    {
+      "probe": "benazir_bhutto/benazir_bhutto_icrawler_1778781793463_13669338.jpg",
+      "gallery": "benazir_bhutto/benazir_bhutto_duckduckgo_1778781953926_f7a00698.jpg",
+      "identity": "benazir_bhutto",
+      "cosine": 0.9871848821640015
+    },
+    {
+      "probe": "khawaja_asif/khawaja_asif_icrawler_1778784321588_a608fe8b.jpg",
+      "gallery": "khawaja_asif/khawaja_asif_icrawler_1778784368013_04383501.jpg",
+      "identity": "khawaja_asif",
+      "cosine": 0.9897951483726501
+    }
+  ],
+  "verdict": "near-duplicates present \u2014 treat Rank-1 as optimistic"
+}

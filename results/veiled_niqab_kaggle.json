@@ -1,0 +1,41 @@
+{
+  "name": "niqab_kaggle",
+  "conditions": {
+    "no_retry": {
+      "n_images": 532,
+      "detected": 417,
+      "detection_rate": 0.7838345864661654,
+      "enrolled": 114,
+      "enroll_rate": 0.21428571428571427,
+      "live": 410,
+      "live_rate": 0.9832134292565947,
+      "gt_boxes": 709,
+      "gt_matched": 0,
+      "gt_recall": 0.0,
+      "gt_boxes_large": 681,
+      "gt_matched_large": 0,
+      "gt_recall_large": 0.0,
+      "pad_used_rate": 0.0,
+      "iod_median": 49.991539001464844,
+      "det_score_median": 0.7272647023200989
+    },
+    "reflected_retry": {
+      "n_images": 532,
+      "detected": 437,
+      "detection_rate": 0.8214285714285714,
+      "enrolled": 117,
+      "enroll_rate": 0.2199248120300752,
+      "live": 428,
+      "live_rate": 0.9794050343249427,
+      "gt_boxes": 709,
+      "gt_matched": 0,
+      "gt_recall": 0.0,
+      "gt_boxes_large": 681,
+      "gt_matched_large": 0,
+      "gt_recall_large": 0.0,
+      "pad_used_rate": 0.04576659038901602,
+      "iod_median": 49.991539001464844,
+      "det_score_median": 0.7226428389549255
+    }
+  }
+}

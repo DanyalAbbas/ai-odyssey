@@ -1,0 +1,5 @@
+=== LFW masked probes (synthetic lower-face masks)
+Tue Oct 20 06:27:29 PM PKT 2026
+  gallery: cropping 600 images (detection is the slow stage)
+/home/danyal-abbas/codingstuff/Python Programming/ai-odyssey/.venv/lib/python3.13/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)

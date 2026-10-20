@@ -1,0 +1,4 @@
+=== AdaFace IR-101 (v2 crops)
+Tue Oct 20 06:27:33 PM PKT 2026
+  probe: reused cached crops (437 images)
+  probe: embedding 437 crops in batches of 32

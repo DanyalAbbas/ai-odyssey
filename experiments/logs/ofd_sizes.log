@@ -1,0 +1,5 @@
+niqab_ofd_retry: 400 images
+/home/danyal-abbas/codingstuff/Python Programming/ai-odyssey/.venv/lib/python3.13/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
+  reflected_retry  det=0.613 enrol=0.198 live=0.939 gt_recall=0.336 gt_recall_large=0.356 gt_center=0.453 pad_used=0.241
+saved -> veiled_niqab_ofd_retry.json

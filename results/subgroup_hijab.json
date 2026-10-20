@@ -1,0 +1,25 @@
+{
+  "n_tagged_total": 59,
+  "groups": {
+    "head_covered": {
+      "n": 42,
+      "rank1": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "n_correct": 42
+    },
+    "hair_visible": {
+      "n": 17,
+      "rank1": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "n_correct": 17
+    }
+  },
+  "n_tagged_not_enrolled": 0,
+  "not_enrolled": []
+}
