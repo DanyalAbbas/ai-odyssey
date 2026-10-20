@@ -9,6 +9,10 @@ submit/models/
 submit/*.zip
 submit/predicted*.csv
 
+# Demo UI: gallery cache and identities enrolled during a demo
+app/.cache/
+app/demo_gallery/
+
 # Python
 __pycache__/
 *.pyc
@@ -21,3 +25,9 @@ __pycache__/
 # Weights (checksums in REPORT.md §12.4); the submission carries its own copies
 models/
 submit.zip
+
+# Playwright MCP working files
+.playwright-mcp/
+
+# Experiment logs (scratch output; results/ carries the numbers)
+experiments/logs/*.log

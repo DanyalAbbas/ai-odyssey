@@ -1,0 +1,333 @@
+{
+  "n_probes_detected": 437,
+  "n_probes_total": 437,
+  "fte_rate": 0.0,
+  "rank1_detected": 0.9839816933638444,
+  "rank1_ci": [
+    0.9839816933638444,
+    0.9702517162471396,
+    0.9931350114416476
+  ],
+  "end_to_end_accuracy": 0.9839816933638444,
+  "rank1_at_threshold": 0.9748283752860412,
+  "tar_at_far_1e-3": 0.9702517162471396,
+  "far_at_1e-3": 0.0010401497815685223,
+  "tar_at_far_1e-4": 0.3135011441647597,
+  "far_at_1e-4": 0.00010401497815681893,
+  "eer": 0.009205325566881584,
+  "auc": 0.9990971880728856,
+  "genuine_mean": 0.768025815486908,
+  "impostor_mean": 0.036306533962488174,
+  "operating_point": {
+    "threshold": 0.4,
+    "TP": 431,
+    "FP": 26,
+    "FN": 6,
+    "TN": 9588,
+    "precision": 0.9431072210065645,
+    "recall": 0.9862700228832952,
+    "f1": 0.9642058165548099,
+    "far": 0.0027043894320782193,
+    "frr": 0.013729977116704805
+  },
+  "threshold_sweep": [
+    {
+      "threshold": 0.2,
+      "TP": 435,
+      "FP": 295,
+      "FN": 2,
+      "TN": 9319,
+      "precision": 0.5958904109589042,
+      "recall": 0.9954233409610984,
+      "f1": 0.7455012853470437,
+      "far": 0.030684418556272103,
+      "frr": 0.004576659038901602
+    },
+    {
+      "threshold": 0.25,
+      "TP": 434,
+      "FP": 151,
+      "FN": 3,
+      "TN": 9463,
+      "precision": 0.7418803418803419,
+      "recall": 0.9931350114416476,
+      "f1": 0.8493150684931506,
+      "far": 0.015706261701685043,
+      "frr": 0.006864988558352402
+    },
+    {
+      "threshold": 0.3,
+      "TP": 433,
+      "FP": 90,
+      "FN": 4,
+      "TN": 9524,
+      "precision": 0.8279158699808795,
+      "recall": 0.9908466819221968,
+      "f1": 0.9020833333333333,
+      "far": 0.009361348034116913,
+      "frr": 0.009153318077803204
+    },
+    {
+      "threshold": 0.35,
+      "TP": 432,
+      "FP": 50,
+      "FN": 5,
+      "TN": 9564,
+      "precision": 0.8962655601659751,
+      "recall": 0.988558352402746,
+      "f1": 0.940152339499456,
+      "far": 0.00520074890784273,
+      "frr": 0.011441647597254004
+    },
+    {
+      "threshold": 0.4,
+      "TP": 431,
+      "FP": 26,
+      "FN": 6,
+      "TN": 9588,
+      "precision": 0.9431072210065645,
+      "recall": 0.9862700228832952,
+      "f1": 0.9642058165548099,
+      "far": 0.0027043894320782193,
+      "frr": 0.013729977116704805
+    },
+    {
+      "threshold": 0.45,
+      "TP": 426,
+      "FP": 16,
+      "FN": 11,
+      "TN": 9598,
+      "precision": 0.9638009049773756,
+      "recall": 0.9748283752860412,
+      "f1": 0.969283276450512,
+      "far": 0.0016642396505096733,
+      "frr": 0.02517162471395881
+    },
+    {
+      "threshold": 0.5,
+      "TP": 419,
+      "FP": 7,
+      "FN": 18,
+      "TN": 9607,
+      "precision": 0.9835680751173709,
+      "recall": 0.9588100686498856,
+      "f1": 0.9710312862108923,
+      "far": 0.0007281048470979821,
+      "frr": 0.041189931350114416
+    },
+    {
+      "threshold": 0.55,
+      "TP": 412,
+      "FP": 6,
+      "FN": 25,
+      "TN": 9608,
+      "precision": 0.9856459330143541,
+      "recall": 0.9427917620137299,
+      "f1": 0.9637426900584796,
+      "far": 0.0006240898689411275,
+      "frr": 0.057208237986270026
+    },
+    {
+      "threshold": 0.6,
+      "TP": 404,
+      "FP": 5,
+      "FN": 33,
+      "TN": 9609,
+      "precision": 0.9877750611246944,
+      "recall": 0.9244851258581236,
+      "f1": 0.9550827423167849,
+      "far": 0.000520074890784273,
+      "frr": 0.07551487414187644
+    }
+  ],
+  "score_gap": 0.7317192554473877,
+  "per_identity": {
+    "ahsan_iqbal": {
+      "n_probes": 21,
+      "rank1": 1.0,
+      "mean_genuine": 0.7631773352622986
+    },
+    "ali_amin_gandapur": {
+      "n_probes": 13,
+      "rank1": 1.0,
+      "mean_genuine": 0.7091231942176819
+    },
+    "asad_umar": {
+      "n_probes": 18,
+      "rank1": 1.0,
+      "mean_genuine": 0.7641587257385254
+    },
+    "asif_ali_zardari": {
+      "n_probes": 25,
+      "rank1": 0.96,
+      "mean_genuine": 0.6899296045303345
+    },
+    "asim_munir": {
+      "n_probes": 11,
+      "rank1": 1.0,
+      "mean_genuine": 0.7537264227867126
+    },
+    "benazir_bhutto": {
+      "n_probes": 25,
+      "rank1": 1.0,
+      "mean_genuine": 0.7796510457992554
+    },
+    "bilawal_bhutto_zardari": {
+      "n_probes": 24,
+      "rank1": 1.0,
+      "mean_genuine": 0.7863405346870422
+    },
+    "fawad_chaudhry": {
+      "n_probes": 22,
+      "rank1": 1.0,
+      "mean_genuine": 0.8391827940940857
+    },
+    "fazl_ur_rehman": {
+      "n_probes": 12,
+      "rank1": 1.0,
+      "mean_genuine": 0.7907434105873108
+    },
+    "hamza_shehbaz": {
+      "n_probes": 12,
+      "rank1": 0.5833333333333334,
+      "mean_genuine": 0.6113880276679993
+    },
+    "hina_rabbani_khar": {
+      "n_probes": 19,
+      "rank1": 1.0,
+      "mean_genuine": 0.7206323742866516
+    },
+    "imran_khan": {
+      "n_probes": 25,
+      "rank1": 0.96,
+      "mean_genuine": 0.7563178539276123
+    },
+    "khawaja_asif": {
+      "n_probes": 23,
+      "rank1": 1.0,
+      "mean_genuine": 0.835401713848114
+    },
+    "maryam_nawaz_sharif": {
+      "n_probes": 15,
+      "rank1": 1.0,
+      "mean_genuine": 0.6965492963790894
+    },
+    "murad_ali_shah": {
+      "n_probes": 11,
+      "rank1": 1.0,
+      "mean_genuine": 0.7687545418739319
+    },
+    "nawaz_sharif": {
+      "n_probes": 31,
+      "rank1": 1.0,
+      "mean_genuine": 0.8142042756080627
+    },
+    "pervez_elahi": {
+      "n_probes": 9,
+      "rank1": 1.0,
+      "mean_genuine": 0.8103131055831909
+    },
+    "pervez_musharraf": {
+      "n_probes": 34,
+      "rank1": 1.0,
+      "mean_genuine": 0.7584747672080994
+    },
+    "qamar_javed_bajwa": {
+      "n_probes": 14,
+      "rank1": 1.0,
+      "mean_genuine": 0.7591323852539062
+    },
+    "shah_mehmood_qureshi": {
+      "n_probes": 18,
+      "rank1": 1.0,
+      "mean_genuine": 0.806845486164093
+    },
+    "shehbaz_sharif": {
+      "n_probes": 22,
+      "rank1": 1.0,
+      "mean_genuine": 0.8024024963378906
+    },
+    "sheikh_rashid_ahmed": {
+      "n_probes": 22,
+      "rank1": 1.0,
+      "mean_genuine": 0.7634528875350952
+    },
+    "yousaf_raza_gillani": {
+      "n_probes": 11,
+      "rank1": 1.0,
+      "mean_genuine": 0.799717128276825
+    }
+  },
+  "worst_identities": [
+    {
+      "id": "hamza_shehbaz",
+      "n_probes": 12,
+      "rank1": 0.5833333333333334,
+      "mean_genuine": 0.6113880276679993
+    },
+    {
+      "id": "asif_ali_zardari",
+      "n_probes": 25,
+      "rank1": 0.96,
+      "mean_genuine": 0.6899296045303345
+    },
+    {
+      "id": "imran_khan",
+      "n_probes": 25,
+      "rank1": 0.96,
+      "mean_genuine": 0.7563178539276123
+    },
+    {
+      "id": "ahsan_iqbal",
+      "n_probes": 21,
+      "rank1": 1.0,
+      "mean_genuine": 0.7631773352622986
+    },
+    {
+      "id": "ali_amin_gandapur",
+      "n_probes": 13,
+      "rank1": 1.0,
+      "mean_genuine": 0.7091231942176819
+    }
+  ],
+  "identity_rank1_min": 0.5833333333333334,
+  "identity_rank1_median": 1.0,
+  "n_identities_with_perfect_rank1": 20,
+  "per_quality": {
+    "ok": {
+      "n": 216,
+      "rank1": 0.9814814814814815
+    },
+    "yaw": {
+      "n": 25,
+      "rank1": 1.0
+    },
+    "blur": {
+      "n": 92,
+      "rank1": 0.9891304347826086
+    },
+    "ok_padded": {
+      "n": 80,
+      "rank1": 0.9875
+    },
+    "low": {
+      "n": 24,
+      "rank1": 0.9583333333333334
+    }
+  },
+  "config": {
+    "detector": "v2-escalating",
+    "det_size": 640,
+    "det_thresh": 0.5,
+    "min_iod": 64,
+    "max_yaw": 30,
+    "min_blur": 40,
+    "allow_fallback": true,
+    "pad_retry": 0.3,
+    "flip_tta": false,
+    "pad": null,
+    "pad_threshold": 0.5,
+    "model": "adaface_ir50_ms1mv2.onnx",
+    "model_bytes": 174393386
+  }
+}

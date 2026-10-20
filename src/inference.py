@@ -116,17 +116,27 @@ class FacePipeline:
         ua = (a[2]-a[0])*(a[3]-a[1]) + (b[2]-b[0])*(b[3]-b[1]) - inter
         return inter / ua if ua > 0 else 0.0
 
-    def _detect(self, img, det_thresh=0.5):
+    def _detect(self, img, det_thresh=0.5, trace=None):
         """Two escalations, both for SCRFD's scene-context bias:
-        nothing found -> reflected border; only tiny faces -> 320 pass."""
+        nothing found -> reflected border; only tiny faces -> 320 pass.
+
+        `trace` is an optional list that the demo UI appends human-readable
+        stage notes to. It never changes the result.
+        """
+        notes = trace if trace is not None else []
+        h, w = img.shape[:2]
         faces = [f for f in self.app.get(img) if f.det_score >= det_thresh]
+        notes.append(f"pass 1 @640 on {w}x{h}: {len(faces)} face(s)")
         if not faces:
             b = int(round(max(img.shape[:2]) * DET_PAD_RETRY))
             if b > 0:
                 padded = cv2.copyMakeBorder(img, b, b, b, b, cv2.BORDER_REFLECT_101)
                 f2 = [f for f in self.app.get(padded) if f.det_score >= det_thresh]
                 if f2:
+                    notes.append(f"escalation 1: nothing found -> reflected border "
+                                 f"+{b}px -> {len(f2)} face(s)")
                     return padded, f2
+                notes.append(f"escalation 1: reflected border +{b}px -> still nothing")
         if faces:
             big = max(faces, key=self._area)
             iod = float(np.linalg.norm(big.kps[0] - big.kps[1]))
@@ -142,13 +152,28 @@ class FacePipeline:
                          if f.det_score >= det_thresh
                          and all(self._iou(f.bbox, g.bbox) < 0.5 for g in faces)]
                 faces = faces + extra
+                notes.append(f"escalation 2: largest IOD {iod:.0f}px, area "
+                             f"{frac*100:.1f}% -> 320px pass -> +{len(extra)} face(s)")
+            else:
+                notes.append(f"no escalation: largest IOD {iod:.0f}px, "
+                             f"area {frac*100:.1f}%")
         return img, faces
 
     def _embed(self, img, face):
         if self.sess is None:
             emb = face.normed_embedding  # already L2-normalised by InsightFace
             if emb is None:
-                emb = face.embedding
+                # A face from the 320px escalation comes from a detection-only
+                # FaceAnalysis, so it carries no embedding. Recompute it from
+                # the aligned crop with the pack's recogniser.
+                rec = self.app.models.get("recognition")
+                if rec is not None:
+                    crop = face_align.norm_crop(img, landmark=face.kps, image_size=112)
+                    emb = rec.get_feat(crop).flatten()
+                else:
+                    emb = face.embedding
+                if emb is None:
+                    raise RuntimeError("no recogniser available to embed this face")
                 emb = emb / (np.linalg.norm(emb) + 1e-12)
             return emb
         crop = face_align.norm_crop(img, landmark=face.kps, image_size=112)
@@ -157,14 +182,14 @@ class FacePipeline:
         out = self.sess.run(None, {self.input_name: x})[0][0]
         return out / (np.linalg.norm(out) + 1e-12)
 
-    def get_faces(self, img, quality_filter=True, gate_pad=True):
+    def get_faces(self, img, quality_filter=True, gate_pad=True, trace=None):
         """Returns list of (face_obj, embedding, quality_reason).
 
         `gate_pad=False` is for gallery enrolment: an ID-card scan or a printed
         portrait is a legitimate enrolment source, so liveness must not be
         applied there. It is always applied to probes.
         """
-        img, faces = self._detect(img)
+        img, faces = self._detect(img, trace=trace)
         results = []
         for f in faces:
             if self.spoof is not None and gate_pad:

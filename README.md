@@ -34,16 +34,20 @@ runtime.
 
 ## Files
 
-| File | Purpose |
+| Path | Purpose |
 |---|---|
 | `submit/` | **The submission**: `predict.py`, `selftest.py`, vendored ONNX weights, `Dockerfile` |
+| `app/` | Gradio presentation UI (`demo.py`) |
 | `src/` | All pipeline, evaluation and experiment code (see below) |
 | `results/` | One JSON + score matrix per run, figures in `results/figures/` |
 | `experiments/` | Reproducible drivers (`run_final.sh`, `run_v2_models.sh`) and their logs |
 
 `submit/` is deliberately self-contained: it carries its own copies of
 `inference.py`, `pad.py` and `imgio.py` so the package has no dependency on this
-repo's layout. When changing runtime code, edit `src/` and copy across.
+repo's layout. When changing runtime code, edit both (they are kept identical).
+
+| Source | Purpose |
+|---|---|
 | `src/inference.py` | Production pipeline (PAD → detect → align → quality → embed → match) |
 | `src/evaluate_pak.py` | Benchmark harness: embedder backends, crop/embedding caches, ablations, bootstrap CIs |
 | `src/pad.py`, `src/imgio.py` | Liveness ensemble, and EXIF-aware image loading |
@@ -57,13 +61,37 @@ repo's layout. When changing runtime code, edit `src/` and copy across.
 | `src/check_duplicates.py` | Near-duplicate leakage audit across the gallery/probe split |
 | `src/diagnose_fte.py` | Failure-to-enrol diagnosis |
 | `experiments/run_final.sh`, `experiments/run_v2_models.sh` | Exact command sequences behind the reported numbers |
-| `src/kaggle_train_v2.py` | Kaggle GPU fine-tune ablation (negative result; not shipped) |
+| `src/collect_train_faces.py` | Collects the self-built corpus (public figures, provenance in `sources.csv`) |
+| `src/clean_train_faces.py` | Aligns and de-noises the corpus into `data/bench_train` |
+| `src/finetune_adaface.py` | AdaFace IR-50 fine-tune on Kaggle, with synthetic hijab/niqab occlusion |
+| `src/push_finetune.py` | Stages and pushes the corpus dataset and the training kernel |
+| `src/kaggle_train_v2.py` | Earlier Kaggle fine-tune ablation (negative result; not shipped) |
+
+## Live demo (presentation)
+
+```bash
+uv run --extra demo python app/demo.py     # http://127.0.0.1:7860
+```
+
+(`--extra demo` matters: a plain `uv run` syncs the project without the demo
+extra and would uninstall Gradio again.)
+
+Upload a photo or use the webcam; the UI shows the decision *and* the reasoning:
+annotated detection, the aligned 112×112 crop that was actually embedded, top-5
+gallery matches with cosine scores, liveness probabilities, quality metrics, and
+the detection-escalation trace. The **Verify 1:1** tab compares two photos, and
+the **Gallery** tab enrols a new person on the spot.
+
+It uses the same `submit/inference.py` as the benchmark, so nothing shown is a
+parallel implementation. The 23-identity gallery is enrolled once (~3 min) and
+cached in `app/.cache/`.
 
 ## Reproducing
 
 ```bash
 uv sync                                     # runtime deps only
 uv sync --extra dev                         # + matplotlib/onnx/torch for figures and training
+uv sync --extra demo                        # + gradio, for the presentation UI
 
 uv run python submit/predict.py --gallery bench/gallery --probe bench/probe \
   --output preds.csv                        # the submission, run in place

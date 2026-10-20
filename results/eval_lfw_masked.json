@@ -1,0 +1,1213 @@
+{
+  "n_probes_detected": 399,
+  "n_probes_total": 400,
+  "fte_rate": 0.0024999999999999467,
+  "rank1_detected": 0.974937343358396,
+  "rank1_ci": [
+    0.974937343358396,
+    0.9598997493734336,
+    0.9899749373433584
+  ],
+  "end_to_end_accuracy": 0.9725,
+  "rank1_at_threshold": 0.849624060150376,
+  "tar_at_far_1e-3": 0.974937343358396,
+  "far_at_1e-3": 0.000994949685772184,
+  "tar_at_far_1e-4": 0.9598997493734336,
+  "far_at_1e-4": 0.00010075439855916635,
+  "eer": 0.02277679122429188,
+  "auc": 0.992220873464249,
+  "genuine_mean": 0.5110700726509094,
+  "impostor_mean": 0.006290812976658344,
+  "operating_point": {
+    "threshold": 0.4,
+    "TP": 339,
+    "FP": 0,
+    "FN": 60,
+    "TN": 79401,
+    "precision": 1.0,
+    "recall": 0.849624060150376,
+    "f1": 0.9186991869918699,
+    "far": 0.0,
+    "frr": 0.15037593984962405
+  },
+  "threshold_sweep": [
+    {
+      "threshold": 0.2,
+      "TP": 389,
+      "FP": 121,
+      "FN": 10,
+      "TN": 79280,
+      "precision": 0.7627450980392156,
+      "recall": 0.974937343358396,
+      "f1": 0.8558855885588558,
+      "far": 0.001523910278208083,
+      "frr": 0.02506265664160401
+    },
+    {
+      "threshold": 0.25,
+      "TP": 384,
+      "FP": 19,
+      "FN": 15,
+      "TN": 79382,
+      "precision": 0.9528535980148883,
+      "recall": 0.9624060150375939,
+      "f1": 0.9576059850374063,
+      "far": 0.00023929169657812874,
+      "frr": 0.03759398496240601
+    },
+    {
+      "threshold": 0.3,
+      "TP": 380,
+      "FP": 1,
+      "FN": 19,
+      "TN": 79400,
+      "precision": 0.9973753280839895,
+      "recall": 0.9523809523809523,
+      "f1": 0.9743589743589743,
+      "far": 1.2594299819901513e-05,
+      "frr": 0.047619047619047616
+    },
+    {
+      "threshold": 0.35,
+      "TP": 364,
+      "FP": 1,
+      "FN": 35,
+      "TN": 79400,
+      "precision": 0.9972602739726028,
+      "recall": 0.9122807017543859,
+      "f1": 0.9528795811518324,
+      "far": 1.2594299819901513e-05,
+      "frr": 0.08771929824561403
+    },
+    {
+      "threshold": 0.4,
+      "TP": 339,
+      "FP": 0,
+      "FN": 60,
+      "TN": 79401,
+      "precision": 1.0,
+      "recall": 0.849624060150376,
+      "f1": 0.9186991869918699,
+      "far": 0.0,
+      "frr": 0.15037593984962405
+    },
+    {
+      "threshold": 0.45,
+      "TP": 294,
+      "FP": 0,
+      "FN": 105,
+      "TN": 79401,
+      "precision": 1.0,
+      "recall": 0.7368421052631579,
+      "f1": 0.8484848484848484,
+      "far": 0.0,
+      "frr": 0.2631578947368421
+    },
+    {
+      "threshold": 0.5,
+      "TP": 242,
+      "FP": 0,
+      "FN": 157,
+      "TN": 79401,
+      "precision": 1.0,
+      "recall": 0.606516290726817,
+      "f1": 0.7550702028081123,
+      "far": 0.0,
+      "frr": 0.39348370927318294
+    },
+    {
+      "threshold": 0.55,
+      "TP": 160,
+      "FP": 0,
+      "FN": 239,
+      "TN": 79401,
+      "precision": 1.0,
+      "recall": 0.40100250626566414,
+      "f1": 0.5724508050089445,
+      "far": 0.0,
+      "frr": 0.5989974937343359
+    },
+    {
+      "threshold": 0.6,
+      "TP": 96,
+      "FP": 0,
+      "FN": 303,
+      "TN": 79401,
+      "precision": 1.0,
+      "recall": 0.24060150375939848,
+      "f1": 0.3878787878787879,
+      "far": 0.0,
+      "frr": 0.7593984962406015
+    }
+  ],
+  "score_gap": 0.5047792792320251,
+  "per_identity": {
+    "Abdullah_Gul": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5782054662704468
+    },
+    "Adrien_Brody": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4687797427177429
+    },
+    "Ahmed_Chalabi": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.648919939994812
+    },
+    "Ai_Sugiyama": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.49982088804244995
+    },
+    "Al_Gore": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5119857788085938
+    },
+    "Al_Sharpton": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6645528078079224
+    },
+    "Alan_Greenspan": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.2901736795902252
+    },
+    "Alastair_Campbell": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5442121624946594
+    },
+    "Albert_Costa": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.612370491027832
+    },
+    "Alejandro_Toledo": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4336271286010742
+    },
+    "Ali_Naimi": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3474542200565338
+    },
+    "Allyson_Felix": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5655211806297302
+    },
+    "Alvaro_Uribe": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5826688408851624
+    },
+    "Amelia_Vega": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.48980608582496643
+    },
+    "Amelie_Mauresmo": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.49181240797042847
+    },
+    "Ana_Guevara": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6569807529449463
+    },
+    "Ana_Palacio": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5568832159042358
+    },
+    "Andre_Agassi": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6187845468521118
+    },
+    "Andy_Roddick": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4843415319919586
+    },
+    "Angela_Bassett": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.30018776655197144
+    },
+    "Angela_Merkel": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4716300070285797
+    },
+    "Angelina_Jolie": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.43882182240486145
+    },
+    "Ann_Veneman": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5711868405342102
+    },
+    "Anna_Kournikova": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3997170627117157
+    },
+    "Antonio_Banderas": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.25729167461395264
+    },
+    "Antonio_Palocci": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5215249061584473
+    },
+    "Ari_Fleischer": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5611774921417236
+    },
+    "Ariel_Sharon": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5603998899459839
+    },
+    "Arminio_Fraga": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6279764175415039
+    },
+    "Arnold_Schwarzenegger": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6067827343940735
+    },
+    "Arnoldo_Aleman": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5934759974479675
+    },
+    "Ashanti": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.42883065342903137
+    },
+    "Atal_Bihari_Vajpayee": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5698563456535339
+    },
+    "Ben_Affleck": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5003145933151245
+    },
+    "Benazir_Bhutto": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.47392964363098145
+    },
+    "Benjamin_Netanyahu": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6197951436042786
+    },
+    "Bernard_Law": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4546080529689789
+    },
+    "Bertie_Ahern": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5577044486999512
+    },
+    "Bill_Clinton": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5068181157112122
+    },
+    "Bill_Frist": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5447342395782471
+    },
+    "Bill_Gates": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5257778167724609
+    },
+    "Bill_Graham": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.409956157207489
+    },
+    "Bill_McBride": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6125128269195557
+    },
+    "Bill_Simon": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4996309280395508
+    },
+    "Billy_Crystal": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.537390947341919
+    },
+    "Binyamin_Ben-Eliezer": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.287555068731308
+    },
+    "Bob_Graham": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5314639806747437
+    },
+    "Bob_Hope": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.208827942609787
+    },
+    "Bob_Stoops": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5615211725234985
+    },
+    "Boris_Becker": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6256277561187744
+    },
+    "Brad_Johnson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5255570411682129
+    },
+    "Britney_Spears": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.33544087409973145
+    },
+    "Bulent_Ecevit": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5702756643295288
+    },
+    "Calista_Flockhart": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5234249830245972
+    },
+    "Cameron_Diaz": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4476349949836731
+    },
+    "Carla_Del_Ponte": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5493569374084473
+    },
+    "Carlos_Menem": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6488558053970337
+    },
+    "Carlos_Moya": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5207135677337646
+    },
+    "Carmen_Electra": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5741944313049316
+    },
+    "Carrie-Anne_Moss": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.46835899353027344
+    },
+    "Catherine_Deneuve": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.547539472579956
+    },
+    "Catherine_Zeta-Jones": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4656943082809448
+    },
+    "Celine_Dion": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.49046802520751953
+    },
+    "Cesar_Gaviria": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6046380996704102
+    },
+    "Chanda_Rubin": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5335491895675659
+    },
+    "Charles_Moose": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.643149733543396
+    },
+    "Charles_Taylor": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5245832800865173
+    },
+    "Charlton_Heston": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.48459580540657043
+    },
+    "Chen_Shui-bian": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.42504560947418213
+    },
+    "Choi_Sung-hong": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5789924263954163
+    },
+    "Christine_Baumgartner": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.45333245396614075
+    },
+    "Christine_Todd_Whitman": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4901484549045563
+    },
+    "Ciro_Gomes": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.663550853729248
+    },
+    "Clara_Harris": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6638826131820679
+    },
+    "Claudia_Pechstein": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4280197024345398
+    },
+    "Clay_Aiken": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5084991455078125
+    },
+    "Clint_Eastwood": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5706356167793274
+    },
+    "Colin_Farrell": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5797098278999329
+    },
+    "Colin_Montgomerie": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.525920033454895
+    },
+    "Colin_Powell": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5338882207870483
+    },
+    "Condoleezza_Rice": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.25240519642829895
+    },
+    "Costas_Simitis": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4331406354904175
+    },
+    "Cruz_Bustamante": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.34328919649124146
+    },
+    "David_Anderson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.47105419635772705
+    },
+    "David_Beckham": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.38537365198135376
+    },
+    "David_Heymann": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6197060346603394
+    },
+    "David_Nalbandian": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.42154812812805176
+    },
+    "David_Trimble": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5865808129310608
+    },
+    "David_Wells": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5097521543502808
+    },
+    "Dennis_Hastert": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5031417012214661
+    },
+    "Dennis_Kucinich": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.7134434580802917
+    },
+    "Denzel_Washington": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.41093018651008606
+    },
+    "Diana_Krall": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.25824010372161865
+    },
+    "Dick_Cheney": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5510554909706116
+    },
+    "Dominique_de_Villepin": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5400717258453369
+    },
+    "Donald_Rumsfeld": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.469343900680542
+    },
+    "Edmund_Stoiber": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5940234661102295
+    },
+    "Eduard_Shevardnadze": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5514321327209473
+    },
+    "Eduardo_Duhalde": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5804579257965088
+    },
+    "Edward_Lu": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6585386991500854
+    },
+    "Elizabeth_Hurley": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.32826268672943115
+    },
+    "Elizabeth_Smart": {
+      "n_probes": 2,
+      "rank1": 0.0,
+      "mean_genuine": 0.06405292451381683
+    },
+    "Elsa_Zylberstein": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4217929244041443
+    },
+    "Elton_John": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4270739257335663
+    },
+    "Emanuel_Ginobili": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5528578162193298
+    },
+    "Emma_Watson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.447540819644928
+    },
+    "Enrique_Bolanos": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3720695376396179
+    },
+    "Erika_Harold": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5318455696105957
+    },
+    "Fernando_Gonzalez": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.46398597955703735
+    },
+    "Fernando_Henrique_Cardoso": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6134809255599976
+    },
+    "Fidel_Castro": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4478916525840759
+    },
+    "Frank_Solich": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.612189769744873
+    },
+    "Fujio_Cho": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5993920564651489
+    },
+    "Gene_Robinson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5557814836502075
+    },
+    "Geoff_Hoon": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5746243000030518
+    },
+    "George_Clooney": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.44633328914642334
+    },
+    "George_HW_Bush": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4225923717021942
+    },
+    "George_Lopez": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5052697658538818
+    },
+    "George_Pataki": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5489984154701233
+    },
+    "George_Robertson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.37411192059516907
+    },
+    "George_W_Bush": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6587293148040771
+    },
+    "Gerhard_Schroeder": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6705729961395264
+    },
+    "Gerry_Adams": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.459043025970459
+    },
+    "Gil_de_Ferran": {
+      "n_probes": 1,
+      "rank1": 1.0,
+      "mean_genuine": 0.45187026262283325
+    },
+    "Gloria_Macapagal_Arroyo": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4438275396823883
+    },
+    "Goldie_Hawn": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3771551251411438
+    },
+    "Gonzalo_Sanchez_de_Lozada": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5100154280662537
+    },
+    "Gordon_Brown": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6087639331817627
+    },
+    "Grant_Hackett": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4917108416557312
+    },
+    "Gray_Davis": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5910593271255493
+    },
+    "Gregg_Popovich": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5530762076377869
+    },
+    "Guillermo_Coria": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4668049216270447
+    },
+    "Gunter_Pleuger": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6151660680770874
+    },
+    "Gwyneth_Paltrow": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4423612058162689
+    },
+    "Habib_Rizieq": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.460065096616745
+    },
+    "Hal_Gehman": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5205035209655762
+    },
+    "Halle_Berry": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3096301555633545
+    },
+    "Hamid_Karzai": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.562657356262207
+    },
+    "Hans_Blix": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.42484307289123535
+    },
+    "Harrison_Ford": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5337013602256775
+    },
+    "Heidi_Klum": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.385175496339798
+    },
+    "Heizo_Takenaka": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.610010027885437
+    },
+    "Hillary_Clinton": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.520100474357605
+    },
+    "Hitomi_Soga": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.45083993673324585
+    },
+    "Holly_Hunter": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5547463893890381
+    },
+    "Hosni_Mubarak": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5329899787902832
+    },
+    "Howard_Dean": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.7080609798431396
+    },
+    "Hu_Jintao": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5508986711502075
+    },
+    "Hugh_Grant": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5701501369476318
+    },
+    "Hugo_Chavez": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5401322245597839
+    },
+    "Ian_Thorpe": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5386248826980591
+    },
+    "Igor_Ivanov": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.669762909412384
+    },
+    "JK_Rowling": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.43476980924606323
+    },
+    "Jack_Straw": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.49997371435165405
+    },
+    "Jackie_Chan": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5833741426467896
+    },
+    "Jacques_Chirac": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6165676116943359
+    },
+    "Jacques_Rogge": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5654736757278442
+    },
+    "Jake_Gyllenhaal": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5575114488601685
+    },
+    "James_Blake": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6120566725730896
+    },
+    "James_Kelly": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5487447381019592
+    },
+    "James_Wolfensohn": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6208420395851135
+    },
+    "Jan_Ullrich": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6351449489593506
+    },
+    "Jason_Kidd": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4250985085964203
+    },
+    "Javier_Solana": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5902771949768066
+    },
+    "Jay_Garner": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5388655066490173
+    },
+    "Jean-David_Levitte": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6052649617195129
+    },
+    "Jean-Pierre_Raffarin": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5450628399848938
+    },
+    "Jean_Charest": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5387880802154541
+    },
+    "Jean_Chretien": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5162069797515869
+    },
+    "Jeb_Bush": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5172669887542725
+    },
+    "Jelena_Dokic": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3544982075691223
+    },
+    "Jennifer_Aniston": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5301631689071655
+    },
+    "Jennifer_Capriati": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4279050827026367
+    },
+    "Jennifer_Garner": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4235137701034546
+    },
+    "Jennifer_Lopez": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3969784080982208
+    },
+    "Jeong_Se-hyun": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.48134323954582214
+    },
+    "Jeremy_Greenstock": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5937041640281677
+    },
+    "Jesse_Jackson": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.46437281370162964
+    },
+    "Jiang_Zemin": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6996608972549438
+    },
+    "Jim_Furyk": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.2829214930534363
+    },
+    "Jimmy_Carter": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.7278598546981812
+    },
+    "Jiri_Novak": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5526434183120728
+    },
+    "Joan_Laporta": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6101434230804443
+    },
+    "Joe_Lieberman": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.3773770332336426
+    },
+    "John_Abizaid": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6765632629394531
+    },
+    "John_Allen_Muhammad": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4347209334373474
+    },
+    "John_Ashcroft": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.28822875022888184
+    },
+    "John_Bolton": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5315676927566528
+    },
+    "John_Edwards": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6332451701164246
+    },
+    "John_Howard": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6386804580688477
+    },
+    "John_Kerry": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5804402828216553
+    },
+    "John_Manley": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5607624053955078
+    },
+    "John_McCain": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6231831312179565
+    },
+    "John_Negroponte": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.17590637505054474
+    },
+    "John_Paul_II": {
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.30351048707962036
+    },
+    "John_Snow": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5459984540939331
+    },
+    "John_Stockton": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.6374097466468811
+    },
+    "John_Travolta": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.47208476066589355
+    },
+    "Jon_Gruden": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.4392673671245575
+    },
+    "Jonathan_Edwards": {
+      "n_probes": 2,
+      "rank1": 1.0,
+      "mean_genuine": 0.5281620025634766
+    }
+  },
+  "worst_identities": [
+    {
+      "id": "Elizabeth_Smart",
+      "n_probes": 2,
+      "rank1": 0.0,
+      "mean_genuine": 0.06405292451381683
+    },
+    {
+      "id": "Alan_Greenspan",
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.2901736795902252
+    },
+    {
+      "id": "Antonio_Banderas",
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.25729167461395264
+    },
+    {
+      "id": "Binyamin_Ben-Eliezer",
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.287555068731308
+    },
+    {
+      "id": "Bob_Hope",
+      "n_probes": 2,
+      "rank1": 0.5,
+      "mean_genuine": 0.208827942609787
+    }
+  ],
+  "identity_rank1_min": 0.0,
+  "identity_rank1_median": 1.0,
+  "n_identities_with_perfect_rank1": 191,
+  "per_quality": {
+    "ok": {
+      "n": 370,
+      "rank1": 0.9756756756756757
+    },
+    "yaw": {
+      "n": 25,
+      "rank1": 1.0
+    },
+    "ok_padded": {
+      "n": 1,
+      "rank1": 1.0
+    },
+    "low": {
+      "n": 3,
+      "rank1": 0.6666666666666666
+    }
+  },
+  "config": {
+    "detector": "v2-escalating",
+    "det_size": 640,
+    "det_thresh": 0.5,
+    "min_iod": 64,
+    "max_yaw": 30,
+    "min_blur": 40,
+    "allow_fallback": true,
+    "pad_retry": 0.3,
+    "flip_tta": false,
+    "pad": null,
+    "pad_threshold": 0.5,
+    "model": "buffalo_l/w600k_r50"
+  }
+}

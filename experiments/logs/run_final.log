@@ -10,3 +10,151 @@ Tue Oct 20 06:27:29 PM PKT 2026
   gallery: embedding 600 crops in batches of 32
   gallery: embedded in 202s
   probe_masked: cropping 400 images (detection is the slow stage)
+    200/400 cropped (126s)
+    400/400 cropped (243s)
+  probe_masked: crops cached in 244s
+  probe_masked: embedding 399 crops in batches of 32
+  probe_masked: embedded in 61s
+gallery: 200 ids | probes: 399/400 detected
+
+==============================================================
+RESULT [lfw_masked]
+  n_probes_detected        399.0000
+  n_probes_total           400.0000
+  fte_rate                 0.0025
+  rank1_detected           0.9749
+  end_to_end_accuracy      0.9725
+  tar_at_far_1e-3          0.9749
+  tar_at_far_1e-4          0.9599
+  eer                      0.0228
+  auc                      0.9922
+  genuine_mean             0.5111
+  impostor_mean            0.0063
+  score_gap                0.5048
+  precision/recall/F1 @0.4: 1.0000 / 0.8496 / 0.9187
+  worst identity: {'id': 'Elizabeth_Smart', 'n_probes': 2, 'rank1': 0.0, 'mean_genuine': 0.06405292451381683}
+  per-quality: {'ok': {'n': 370, 'rank1': 0.9756756756756757}, 'yaw': {'n': 25, 'rank1': 1.0}, 'ok_padded': {'n': 1, 'rank1': 1.0}, 'low': {'n': 3, 'rank1': 0.6666666666666666}}
+saved -> results/eval_lfw_masked.json
+=== LFW clean probes (paired control)
+Tue Oct 20 06:53:05 PM PKT 2026
+  probe_clean: cropping 400 images (detection is the slow stage)
+/home/danyal-abbas/codingstuff/Python Programming/ai-odyssey/.venv/lib/python3.13/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
+    200/400 cropped (114s)
+    400/400 cropped (241s)
+  probe_clean: crops cached in 242s
+  probe_clean: embedding 400 crops in batches of 32
+  probe_clean: embedded in 76s
+gallery: 200 ids | probes: 400/400 detected
+
+==============================================================
+RESULT [lfw_clean]
+  n_probes_detected        400.0000
+  n_probes_total           400.0000
+  fte_rate                 0.0000
+  rank1_detected           0.9825
+  end_to_end_accuracy      0.9825
+  tar_at_far_1e-3          0.9825
+  tar_at_far_1e-4          0.9825
+  eer                      0.0177
+  auc                      0.9928
+  genuine_mean             0.7202
+  impostor_mean            0.0062
+  score_gap                0.7140
+  precision/recall/F1 @0.4: 1.0000 / 0.9700 / 0.9848
+  worst identity: {'id': 'Elizabeth_Smart', 'n_probes': 2, 'rank1': 0.0, 'mean_genuine': 0.05979890003800392}
+  per-quality: {'blur': {'n': 390, 'rank1': 1.0}, 'ok': {'n': 9, 'rank1': 0.2222222222222222}, 'low': {'n': 1, 'rank1': 1.0}}
+saved -> results/eval_lfw_clean.json
+=== controlled occlusion stress (identity fixed)
+Tue Oct 20 06:58:26 PM PKT 2026
+clean           rank1=0.9794 CI[0.966,0.991] TAR@1e-3=0.9703 EER=0.0114 genuine=0.792
+hijab           rank1=0.9794 CI[0.966,0.991] TAR@1e-3=0.9657 EER=0.0114 genuine=0.759
+niqab_light     rank1=0.9657 CI[0.947,0.982] TAR@1e-3=0.9039 EER=0.0370 genuine=0.495
+niqab_full      rank1=0.9199 CI[0.895,0.943] TAR@1e-3=0.8398 EER=0.0682 genuine=0.356
+niqab_extreme   rank1=0.8902 CI[0.860,0.918] TAR@1e-3=0.7300 EER=0.0892 genuine=0.283
+saved -> results/occlusion_stress.json
+=== gallery aggregation ablations (cache reuse)
+Tue Oct 20 07:14:25 PM PKT 2026
+gallery: 23 ids | probes: 437/437 detected
+
+==============================================================
+RESULT [gal_first]
+  n_probes_detected        437.0000
+  n_probes_total           437.0000
+  fte_rate                 0.0000
+  rank1_detected           0.9748
+  end_to_end_accuracy      0.9748
+  tar_at_far_1e-3          0.3730
+  tar_at_far_1e-4          0.1167
+  eer                      0.0161
+  auc                      0.9976
+  genuine_mean             0.6409
+  impostor_mean            0.0483
+  score_gap                0.5926
+  precision/recall/F1 @0.4: 0.9257 / 0.9405 / 0.9330
+  PAD BPCER @0.05: 0.0435 (n=437, mean live prob 0.823)
+  worst identity: {'id': 'hamza_shehbaz', 'n_probes': 12, 'rank1': 0.5833333333333334, 'mean_genuine': 0.4502851068973541}
+  per-quality: {np.str_('ok'): {'n': 216, 'rank1': 0.9629629629629629}, 'yaw': {'n': 25, 'rank1': 1.0}, 'blur': {'n': 92, 'rank1': 0.9891304347826086}, np.str_('ok_padded'): {'n': 80, 'rank1': 0.975}, 'low': {'n': 24, 'rank1': 1.0}}
+saved -> results/eval_gal_first.json
+gallery: 23 ids | probes: 437/437 detected
+
+==============================================================
+RESULT [gal_medoid]
+  n_probes_detected        437.0000
+  n_probes_total           437.0000
+  fte_rate                 0.0000
+  rank1_detected           0.9840
+  end_to_end_accuracy      0.9840
+  tar_at_far_1e-3          0.9771
+  tar_at_far_1e-4          0.4348
+  eer                      0.0160
+  auc                      0.9991
+  genuine_mean             0.7150
+  impostor_mean            0.0523
+  score_gap                0.6627
+  precision/recall/F1 @0.4: 0.9683 / 0.9771 / 0.9727
+  PAD BPCER @0.05: 0.0435 (n=437, mean live prob 0.823)
+  worst identity: {'id': 'hamza_shehbaz', 'n_probes': 12, 'rank1': 0.5833333333333334, 'mean_genuine': 0.5121976733207703}
+  per-quality: {np.str_('ok'): {'n': 216, 'rank1': 0.9768518518518519}, 'yaw': {'n': 25, 'rank1': 1.0}, 'blur': {'n': 92, 'rank1': 0.9891304347826086}, np.str_('ok_padded'): {'n': 80, 'rank1': 0.9875}, 'low': {'n': 24, 'rank1': 1.0}}
+saved -> results/eval_gal_medoid.json
+=== no-retry ablation (FTE)
+Tue Oct 20 07:14:31 PM PKT 2026
+  gallery: cropping 849 images (detection is the slow stage)
+/home/danyal-abbas/codingstuff/Python Programming/ai-odyssey/.venv/lib/python3.13/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
+    200/849 cropped (185s)
+    400/849 cropped (358s)
+    600/849 cropped (499s)
+    800/849 cropped (615s)
+  gallery: crops cached in 645s
+  gallery: embedding 632 crops in batches of 32
+  gallery: embedded in 122s
+  probe: cropping 437 images (detection is the slow stage)
+    200/437 cropped (121s)
+    400/437 cropped (225s)
+  probe: crops cached in 249s
+  probe: embedding 328 crops in batches of 32
+  probe: embedded in 54s
+gallery: 23 ids | probes: 328/437 detected
+
+==============================================================
+RESULT [nopad]
+  n_probes_detected        328.0000
+  n_probes_total           437.0000
+  fte_rate                 0.2494
+  rank1_detected           0.9756
+  end_to_end_accuracy      0.7323
+  tar_at_far_1e-3          0.9634
+  tar_at_far_1e-4          0.3933
+  eer                      0.0123
+  auc                      0.9929
+  genuine_mean             0.7960
+  impostor_mean            0.0678
+  score_gap                0.7282
+  precision/recall/F1 @0.4: 0.8877 / 0.9878 / 0.9351
+  PAD BPCER @0.05: 0.0427 (n=328, mean live prob 0.806)
+  worst identity: {'id': 'hamza_shehbaz', 'n_probes': 10, 'rank1': 0.5, 'mean_genuine': 0.6300752758979797}
+  per-quality: {'ok': {'n': 213, 'rank1': 0.9812206572769953}, 'blur': {'n': 72, 'rank1': 0.9861111111111112}, 'yaw': {'n': 18, 'rank1': 1.0}, 'low': {'n': 25, 'rank1': 0.88}}
+saved -> results/eval_nopad.json
+ALL DONE
+Tue Oct 20 07:32:24 PM PKT 2026

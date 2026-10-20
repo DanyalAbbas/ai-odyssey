@@ -20,6 +20,10 @@ dev = [
     "onnx==1.23.2",
     "torch>=2.6",
 ]
+# Presentation UI only.
+demo = [
+    "gradio>=6.0",
+]
 
 [tool.uv]
 # insightface builds a small Cython extension at install time.

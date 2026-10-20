@@ -596,3 +596,33 @@ Dropping to 0.35 lowers FRR to 0.46 % but doubles FAR to 0.89 %.
 Near-duplicate audit on the v2 caches: 2/437 probes have same-identity cosine
 >= 0.985 to a gallery image. Excluding both correct probes gives 98.62 % vs
 98.63 % as reported, so the headline is not leakage-driven.
+
+## 2026-10-20 — Self-collected corpus for the compliance fine-tune
+
+The brief requires teams to collect their own data and fine-tune; the LFW
+ablation (§6.2) does not satisfy that. Corpus collected tonight: **99 Pakistani
+public figures, 4,203 web images**, 45 images per identity from logged-out Bing
+search, disjoint from the 23 evaluation identities (checked before download and
+again before training).
+
+Identity mix: 20 female (including labelled hijab/dupatta identities), 79 male;
+politicians, cricketers, actors, comedians, clerics, journalists. Provenance in
+`data/raw/train_faces/sources.csv`.
+
+Backbone decision: AdaFace **IR-50 MS1MV2** rather than buffalo_l. The public
+checkpoint is a Lightning file whose key layout (`input_layer`/`body.N.res_layer`
+/`output_layer`) differs from arcface_torch; the block applies stride on the
+second conv and uses a parameter-free MaxPool shortcut when widths match.
+Reconstructed from the released tensors, loaded with `strict=True` (467 tensors)
+and validated on the benchmark: **98.40 %** vs 98.63 % for the official ONNX —
+one probe apart, which is the check that the architecture and preprocessing are
+right, not a result in itself.
+
+**Pre-registered promotion rule (written before the fine-tune ran):** the
+fine-tuned model replaces buffalo_l in the submission only if, on the 437-probe
+benchmark, it (a) does not lose rank-1 and (b) does not lose TAR@1e-3. A tie goes
+to the fine-tuned model, because it is the artefact the brief asks for and its
+domain adaptation is the point of the exercise; a loss of even one probe on
+either metric keeps the stock model and the fine-tune is reported as a negative
+result. The 98.40 % re-implementation is therefore the floor, and the run is
+only worth shipping if it clears 98.63 % or at least holds TAR.

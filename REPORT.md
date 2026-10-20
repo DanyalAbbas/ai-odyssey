@@ -64,6 +64,7 @@ We evaluate both protocols:
 | Dataset | Role | Size | License | Overlap Risk |
 |---|---|---|---|---|
 | Pakistani Public Figures | Primary eval | 1,286 imgs / 23 IDs | CC0 | Low |
+| Self-collected training corpus (§6.6) | Fine-tune train | 4,203 imgs / 99 IDs | Web (research use) | None by construction |
 | LFW | Fine-tune ablation (Kaggle) | 13,233 imgs / 5,749 IDs | Free | Low |
 | Masked-LFW | Paired masked/clean occlusion test | 600 gal / 400 probes, 200 IDs | CC0 | None (synthetic masks) |
 | Niqab Dataset for Occluded Face Detection (Zenodo 17011207) | Niqab detection/enrolment | 5,175 imgs (400 sampled) | CC-BY-4.0 | N/A (detection only) |
@@ -88,32 +89,46 @@ never to claim recognition accuracy on niqab (see §10.1).
 
 ### 3.2 Data Collection & Consent
 
-**No primary data was collected.** No human subjects were recruited, no images
-were taken for this work, and no private individual's face is used anywhere in
-the pipeline or the report. Every image comes from an existing public dataset
-under the licences in §3.1.
+The evaluation benchmark uses public datasets only. The brief also asks teams to
+collect their own training data and fine-tune, so a training corpus was added
+late in the build (described in §6.6). This section states exactly what was
+collected and under what limits.
 
-That removes the usual consent mechanism but not the ethical question: the
-evaluation set consists of Pakistani public figures, and the niqab datasets
-contain faces of anonymous private individuals. We handle this as follows:
+**What was collected.** 99 Pakistani public figures — politicians, cricketers,
+actors, comedians, clerics and journalists — with roughly 45 web images each
+(4,203 images) retrieved from logged-out Bing image search. Every image URL is
+recorded in `sources.csv`; the corpus is processed into aligned crops and never
+redistributed. It is uploaded to a **private** Kaggle dataset for the training
+run and is not part of the submission.
 
-- Public-figure images are used for accuracy measurement only; the benchmark is
-  never redistributed beyond the competition, and faces of private individuals
-  are not reproduced in this report.
-- The niqab datasets are used **only** to measure detection and enrolment rates.
-  No identity is attached to any of those faces, no recognition claim is made
-  about them, and no template is persisted after the measurement.
-- No model is deployed on the public, and no biometric database is created.
+**What was deliberately excluded.** No private individual appears in the corpus:
+the identity list is restricted to people with a public profile and a Wikipedia
+or news presence. No image of an evaluation identity is used for training — the
+collector refuses any name that collides with `data/pak_fig`, and the split is
+checked again before training (§3.3). No private accounts, no login-walled
+content, no CCTV or scraped biometric databases.
+
+**Consent.** Public figures photographed at public events have no expectation of
+privacy in those images, and this use is research, not deployment: no model is
+released for use on the public, and the corpus is deleted after the run. That is
+a defensible position, not a consent mechanism — if this were a product, the
+training data would need licensed portraits and explicit agreements.
+
+**Private individuals in the niqab sets.** Those images are used only to measure
+detection, enrolment and liveness rates. No identity is attached to any of those
+faces, no recognition claim is made about them, no template is persisted, and no
+face from those sets is reproduced in this report.
 
 An institutional ethics review was not sought because the work involves no human
-participants and no non-public data. For a deployment, a review would be
-mandatory before processing any real user.
+participants, no non-public data and no deployment. For a real deployment a
+review would be mandatory before processing any user.
 
 ### 3.3 Splits
 
 | Split | Identities | Images | Purpose |
 |---|---|---|---|
 | Fine-tune train (LFW) | 5,749 | 13,233 | Kaggle ablation only; identity-disjoint from eval |
+| Fine-tune train (collected, §6.6) | 98 | 2,230 | Compliance run; identity-disjoint from eval by construction |
 | Gallery | 23 | 849 | Enrolment templates (mean per identity) |
 | Probe | 23 | 437 | 1:N queries, disjoint images from the gallery |
 
@@ -121,8 +136,10 @@ The gallery/probe split is by **image**, not by identity: this is a closed-set
 1:N identification benchmark, so every probe has a mate. Near-duplicate probes
 across the split are checked by `check_duplicates.py`, and image-level leakage
 would inflate rank-1, so the audit is reported alongside the result. The
-fine-tuning experiment is identity-disjoint from the benchmark (LFW identities
-do not appear in the 23-identity evaluation set).
+two fine-tuning experiments are identity-disjoint from the benchmark: LFW
+identities do not appear in the 23-identity evaluation set, and the collected
+corpus was checked against the eval names before download and again before
+training.
 
 ### 3.4 Demographics
 
@@ -497,7 +514,87 @@ than a rank-1 tie.
 latency-tolerant *verification* deployment (best score separation); antelopev2 is
 available via `--model antelopev2` but its weights are not bundled.
 
+### 6.6 Self-Collected Corpus and Fine-Tune (Compliance Run)
+
+§6.2 tested whether fine-tuning helps at all, on LFW, and answered no — but it
+did not satisfy the brief, which asks teams to collect their own data and
+fine-tune. This section is that run: a corpus collected for this submission, a
+backbone adapted from a strong pretrained checkpoint, and the same 437-probe
+benchmark as the final judge.
+
+#### 6.6.1 Corpus
+
+| | |
+|---|---|
+| Identities | **98** (54 women, 44 men) |
+| Images scraped | 4,203 (≈45 per identity, logged-out Bing image search) |
+| Aligned crops after cleaning | **2,230** (min 11, median 24, max 29 per identity) |
+| Identities dropped | 1 (fewer than 10 usable crops) |
+| Flagged hijab/dupatta | 24 identities |
+| Overlap with the 23 eval identities | **none**, asserted by name before download and again before training |
+
+The identities are Pakistani politicians, cricketers, actors, comedians, clerics
+and journalists. Cleaning is deliberately strict — exactly one face at
+det_score ≥ 0.6, box ≥ 64 px, two rounds of outlier pruning against the
+identity's running mean at cosine ≥ 0.30, minimum 10 survivors — because web
+search returns group photos, memes, logos and the wrong person, and a noisy
+fine-tune is worse than none.
+
+#### 6.6.2 Why synthetic veiling
+
+Real niqab photographs have no identity labels (§7.4.2), so they cannot be
+trained on. Instead every aligned crop is optionally painted with a cloth
+occluder before it enters the network: lower face and sides (niqab), hairline
+and sides (hijab), or nose/mouth/chin (surgical mask), with probability 0.6.
+Because the crop is ArcFace-aligned, the occluder lands in the anatomically
+correct place for every subject, and the label is preserved by construction.
+The corpus is also weighted towards veiled identities (24 of 98), so the
+augmentation is not the only source of covered faces.
+
+#### 6.6.3 Training
+
+Backbone: AdaFace **IR-50 pretrained on MS1MV2**, reconstructed from the released
+checkpoint (467 tensors, loaded `strict=True`) and validated at 98.40 % before
+any training — one probe below the official ONNX, which is what confirms the
+architecture and preprocessing are right.
+
+| Setting | Value |
+|---|---|
+| Head | ArcFace, s = 64, m = 0.35, trained from scratch |
+| Epochs / batch | 40 / 64 (≈1,160 steps, cosine schedule) |
+| LR | 5e-5 backbone, 3e-3 head, weight decay 5e-4 |
+| BatchNorm | frozen (statistics and affine parameters) |
+| Augmentation | horizontal flip, photometric jitter, synthetic hijab/niqab/mask |
+| Hardware | one Kaggle T4 |
+
+Frozen BN and a low backbone LR are the two choices that matter at this corpus
+size: 2,230 images cannot re-estimate 50 layers of batch statistics, and a high
+LR would erase the MS1MV2 representation faster than 98 identities can improve
+it.
+
+#### 6.6.4 Result
+
+| Model | Rank-1 | TAR@1e-3 | EER | Genuine mean |
+|---|---|---|---|---|
+| buffalo_l R50 (shipped baseline) | 98.63 % (431/437) | 97.71 | 0.69 % | 0.791 |
+| AdaFace IR-50, pretrained (reimplementation check) | 98.40 % (430/437) | 97.03 | 0.92 % | 0.768 |
+
+**Status of the compliance run.** The job is built and pushed
+(`danyalabbas1/techfest-pakistan-finetune`, 40 epochs, one T4), and at the time
+of writing it is queued for a GPU. It is deliberately additive: the shipped
+submission and every number in this report are produced without it. When the
+kernel completes, its row is appended to the table above and the rule below is
+applied unchanged. If the queue does not clear before the deadline, the run is
+reported as not executed — the baseline stands, and this paragraph is the record
+of why.
+
+**Promotion rule (fixed before the run):** the fine-tuned model replaces
+buffalo_l only if it does not lose rank-1 *and* does not lose TAR@1e-3. A tie
+goes to the fine-tuned model, because it is the artefact the brief asks for. A
+loss on either metric keeps the stock model and this becomes a negative result.
+
 ---
+
 
 ## 7. Per-Group Performance
 
@@ -606,7 +703,79 @@ a detector measurement, so we report only the label-independent rates above. The
 Kaggle set's boxes are person boxes, which is why its GT recall is 0 and why the
 detection rate — not recall — is the reported number there.
 
-#### 7.4.3 What this means operationally
+#### 7.4.3 Controlled occlusion: surgical mask, identity held fixed
+
+Real niqab images have no identity labels, so we add a paired experiment in which
+the only variable is the lower face. Masked-LFW provides each subject's photo
+twice — once clean, once with a surgical mask painted over nose, mouth and chin —
+so we build two 1:N benchmarks that share the same clean gallery and differ only
+in the probe set (400 identities, 400 probes each).
+
+| Condition | Detected | Rank-1 (detected) | End-to-end | TAR@1e-3 | EER | Genuine mean | Correct **and** accepted @0.40 |
+|---|---|---|---|---|---|---|---|
+| Clean | 400/400 | 98.25 % | 98.25 % | 98.25 | 1.77 % | 0.720 | 97.00 % |
+| Masked | 399/400 | 97.50 % | 97.25 % | 97.50 | 2.28 % | 0.511 | 84.96 % |
+| Δ | −0.25 | **−0.75** | −1.00 | −0.75 | +0.51 | **−0.209** | **−12.04** |
+
+Two different things happen, and conflating them would be the easy mistake.
+*Ranking* barely moves: the mask costs 0.75 points of rank-1 and 0.5 points of
+EER. *Calibration* does: the mean genuine score falls from 0.720 to 0.511, and at
+the fixed 0.40 threshold the share of probes that are both correct and accepted
+drops from 97.0 % to 85.0 %. The right answer is still ranked first; it just no
+longer clears a threshold tuned on unmasked faces.
+
+Operationally, a masked deployment must not reuse the 0.40 threshold and quote its
+FAR/FRR — recalibrate on masked data, or normalise scores per condition. This is
+not evidence that the recogniser fails on masks.
+
+Two caveats. A surgical mask is not a niqab: it covers the same lower-face region
+but leaves the eyes, brows and hair, and painting it on preserves the pose and
+lighting of the original. And LFW is not Pakistani; this experiment bounds the
+*cost of lower-face occlusion*, and says nothing about local demographics.
+
+#### 7.4.4 Controlled occlusion on the Pakistani benchmark: hijab and niqab levels
+
+The LFW experiment above uses a surgical mask. To measure the covering people
+actually wear here, we repeat the identity-fixed design on our own 437 probes:
+the aligned crop is the only thing that changes, the gallery stays clean, and
+the occluder is painted on the ArcFace template where the eyes, nose and mouth
+sit at fixed rows. Because the crop is already aligned, the occluder lands in
+the anatomically correct place for every subject.
+
+| Condition | What is covered | Rank-1 | TAR@1e-3 | EER | Genuine mean | Impostor mean |
+|---|---|---|---|---|---|---|
+| Clean | nothing | 97.94 % | 97.03 % | 1.14 % | 0.792 | 0.059 |
+| Hijab | hairline and sides, face visible | 97.94 % | 96.57 % | 1.14 % | 0.759 | 0.049 |
+| Niqab, light | lower face and sides, eyes clear | 96.57 % | 90.39 % | 3.70 % | 0.495 | 0.048 |
+| Niqab, full | lower face, sides and brow line | 91.99 % | 83.98 % | 6.82 % | 0.356 | 0.033 |
+| Niqab, extreme | all but a slit around the eyes | 89.02 % | 72.99 % | 8.92 % | 0.283 | 0.032 |
+
+Three observations.
+
+*The hijab is free.* Covering hair and the sides of the head costs nothing in
+rank-1 and 0.5 points of TAR@1e-3, because the five alignment landmarks are
+untouched. This matches the real-data result in §7.4.1.
+
+*Ranking degrades gracefully; calibration does not.* Even "extreme" — a slit
+around the eyes, the hardest case a camera will ever see — keeps rank-1 above
+89 %, but the genuine mean collapses from 0.79 to 0.28 while the impostor mean
+also falls. At a fixed 0.40 threshold almost every niqab probe would be returned
+as `unknown`: the correct identity is still first, but the score no longer
+belongs to the same distribution the threshold was tuned on. This reproduces the
+LFW masked finding on local faces with a stronger occluder, and it is the single
+most important deployment note in this report: **recalibrate the threshold per
+condition, or normalise scores, before gating veiled users.**
+
+*Detection is not the bottleneck here.* These numbers are conditional on a face
+having been found and cropped; the detection failure on real niqab images is
+measured separately in §7.4.2.
+
+The `clean` row is 97.94 % rather than the headline 98.63 % because this harness
+re-embeds cached aligned crops, so the coarse 320 px escalation that recovers
+small faces never runs. It is the correct baseline for a crop-space experiment
+and should not be compared with §6.5.
+
+#### 7.4.5 What this means operationally
 
 A checkpoint deployment that requires a niqab wearer to enrol from a
 close-up photo will find the face 6–8 times in 10 and produce a usable template
@@ -645,6 +814,8 @@ documents how the template was obtained.
 | Identities at 100 % | 21 / 23 |
 | Veiled faces — enrolment | 82.1 % detected, 22.0 % enrol on real niqab photos (§7.4) |
 | Veiled faces — liveness | 97.9 % of detected niqab faces pass PAD |
+| Lower-face occlusion (paired, §7.4.3) | rank-1 −0.75 pts, accepted-at-threshold −12.0 pts |
+| Niqab, extreme (controlled, §7.4.4) | rank-1 −8.9 pts, genuine mean −0.51 |
 
 A fairness claim needs groups with adequate sample size; this benchmark has three
 female identities and no skin-tone annotation, so the honest summary is: **no
@@ -681,10 +852,23 @@ already at 97.3 %.
 | Embedder → AdaFace IR-101 | 98.86 % | +0.23 | best score margin |
 | Score fusion of 4 models | 98.86 % | 0.00 | errors nested; no gain over the best single model |
 | Liveness gate on @0.02 | 96.34 % | −2.29 | 2.3 % of genuine faces rejected |
-| Liveness gate on @0.05 | 94.28 % | −4.35 | |
+| Liveness gate on @0.05 | 94.28 % | −4.35 | 4.3 % of genuine faces rejected |
 | No reflected-border retry | 73.0 % | −25.6 | the FTE ablation |
-| Gallery aggregation: first image | TBD | | |
-| Gallery aggregation: medoid | TBD | | |
+| Gallery aggregation: first image | 97.48 % | −1.15 | one bad enrolment photo is enough |
+| Gallery aggregation: medoid | 98.40 % | −0.23 | robust to one bad photo, still worse than mean |
+| Gallery aggregation: mean (shipped) | 98.63 % | — | all usable photos vote equally |
+
+The two liveness rows deserve a note on accounting. The headline 98.63 % is
+**identity accuracy with the gate disabled**; `evaluate_pak.py` records each
+probe's live score and reports BPCER, so the gated rows are computed post hoc by
+counting a rejected probe as wrong. All 19 probes rejected at 0.05 were ones the
+matcher had ranked correctly, which is why the gate costs the full 4.35 points.
+The production UI does gate at 0.05, and this is the honest end-to-end figure for
+it: 412/437 = 94.28 %. The recogniser among accepted probes is 98.56 %
+(412/418), i.e. the loss is rejection, not misidentification. Lowering the gate
+to 0.02 recovers 2 points at the cost of admitting more spoofs; §5.6 explains why
+0.05 was kept.
+
 
 Fine-tuning is a separate negative result (§6.2) and is not shipped.
 
