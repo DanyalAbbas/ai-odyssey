@@ -5,7 +5,12 @@ matching, with a liveness gate and a veiled-face evaluation.
 
 **Headline result: 98.63 % rank-1 end-to-end (431/437 probes, 23 identities, 0 %
 failure-to-enrol), EER 0.69 %, AUC 0.9995.** The final report is
-[`REPORT.md`](REPORT.md); the research trail is [`RESEARCH_LOG.md`](RESEARCH_LOG.md).
+[`REPORT.md`](REPORT.md); the research trail is
+[`RESEARCH_LOG.md`](RESEARCH_LOG.md).
+
+**Reviewing the repo?** [`GUIDE.md`](GUIDE.md) is the short path: what to run,
+which command produced every reported number, what is deliberately not in git,
+and the status of the in-flight fine-tune.
 
 ## Stack
 
