@@ -11,7 +11,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-d = json.load(open("data/pad_eval.json"))
+with open("data/pad_eval.json") as f:
+    d = json.load(f)
 real = np.array([r["live_prob"] for r in d["real_rows"] if r["live_prob"] is not None])
 att = np.array([r["live_prob"] for r in d["attack_rows"] if r["live_prob"] is not None])
 

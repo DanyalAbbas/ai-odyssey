@@ -51,7 +51,8 @@ class Embedder:
                  pad_retry: float = 0.3, flip_tta: bool = False,
                  batch_size: int = 32, pad_model: str | None = None,
                  pad_threshold: float = 0.5):
-        assert backend in {"baseline", "antelope", "onnx"}
+        if backend not in {"baseline", "antelope", "onnx"}:
+            raise ValueError(f"Invalid backend: {backend!r}. Must be one of: baseline, antelope, onnx")
         self.backend = backend
         self.batch_size = batch_size
         self.det_thresh = det_thresh
@@ -391,14 +392,18 @@ def evaluate(gallery_embs, gallery_ids, probe_embs, probe_ids, probe_meta,
     correct = (g_ids[top1] == p_ids)
     top1_scores = S[np.arange(len(P)), top1]
 
-    genuine = np.array([S[i, np.where(g_ids == p_ids[i])[0][0]]
+    # Extract genuine scores: use MAX similarity for each probe's matching identities
+    # (standard practice when multiple gallery samples exist per identity)
+    genuine = np.array([S[i, (g_ids == p_ids[i])].max()
                         if (g_ids == p_ids[i]).any() else -1.0 for i in range(len(P))])
     imp_mask = np.ones_like(S, bool)
     for i in range(len(P)):
         imp_mask[i, g_ids == p_ids[i]] = False
     impostor = S[imp_mask]
 
-    thrs, far, tar = roc_points(genuine, impostor)
+    # Filter -1.0 sentinel values (probes without matching gallery identity) for statistical analysis
+    genuine_valid = genuine[genuine >= 0]
+    thrs, far, tar = roc_points(genuine_valid, impostor)
     i1e3 = int(np.argmin(np.abs(far - 1e-3)))
     i1e4 = int(np.argmin(np.abs(far - 1e-4)))
     eer_idx = int(np.argmin(np.abs(far - (1 - tar))))
@@ -418,21 +423,23 @@ def evaluate(gallery_embs, gallery_ids, probe_embs, probe_ids, probe_meta,
         "tar_at_far_1e-4": float(tar[i1e4]), "far_at_1e-4": float(far[i1e4]),
         "eer": float((far[eer_idx] + 1 - tar[eer_idx]) / 2),
         "auc": auc,
-        "genuine_mean": float(genuine.mean()),
+        "genuine_mean": float(genuine_valid.mean()) if len(genuine_valid) > 0 else float("nan"),
         "impostor_mean": float(impostor.mean()),
-        "operating_point": metrics_at(genuine, impostor, threshold),
-        "threshold_sweep": [metrics_at(genuine, impostor, t)
+        "operating_point": metrics_at(genuine_valid, impostor, threshold),
+        "threshold_sweep": [metrics_at(genuine_valid, impostor, t)
                             for t in (0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6)],
-        "score_gap": float(genuine.mean() - impostor.mean()),
+        "score_gap": float(genuine_valid.mean() - impostor.mean()) if len(genuine_valid) > 0 else float("nan"),
     }
 
     # per-identity breakdown (fairness-style worst-group analysis)
     per_id = {}
     for pid in sorted(set(probe_ids)):
         m = p_ids == pid
+        genuine_pid = genuine[m]
+        genuine_pid_valid = genuine_pid[genuine_pid >= 0]
         per_id[pid] = {"n_probes": int(m.sum()),
                        "rank1": float(correct[m].mean()),
-                       "mean_genuine": float(genuine[m].mean())}
+                       "mean_genuine": float(genuine_pid_valid.mean()) if len(genuine_pid_valid) > 0 else float("nan")}
     out["per_identity"] = per_id
     ids_sorted = sorted(per_id.items(), key=lambda kv: kv[1]["rank1"])
     out["worst_identities"] = [{"id": k, **v} for k, v in ids_sorted[:5]]

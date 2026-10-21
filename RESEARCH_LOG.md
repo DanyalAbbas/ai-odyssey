@@ -626,3 +626,33 @@ domain adaptation is the point of the exercise; a loss of even one probe on
 either metric keeps the stock model and the fine-tune is reported as a negative
 result. The 98.40 % re-implementation is therefore the floor, and the run is
 only worth shipping if it clears 98.63 % or at least holds TAR.
+
+## 2026-10-21 — Remote history incident and review-agent fixes
+
+At 20:26 UTC on 20 Oct the remote `main` was replaced by a new root commit
+(`8ab18f16`, three commits) rather than updated: the history ending at `c32c431`
+disappeared from GitHub, and with it the report (59 KB → 709 B), the research
+log, the guide, `results/` (55 files), `app/`, and `experiments/`. The
+replacement also committed `__pycache__` files and reverted `pyproject.toml` to
+unpinned dependencies without the `demo`/`dev` extras.
+
+The code changes in that commit were reviewed line by line and kept, as one
+commit on the restored history:
+
+- `evaluate_pak.py`: genuine score is the max over matching gallery columns
+  (was the first), sentinel `-1.0` rows are filtered before metrics and ROC,
+  `ValueError` instead of `assert`.
+- `inference.py`: `_asset()` raises with every searched path, gallery directory
+  check, `EPSILON` constant.
+- `imgio.py`: PIL failure logged before the cv2 fallback.
+- `predict.py`: forward-slash output keys, gallery root check.
+- `selftest` / `fuse_eval` / `summarise` / `pad_figure`: context-managed reads.
+
+Measured effect: none. Every saved run has one gallery vector per identity and
+no probe without a mate, so max-vs-first and sentinel filtering are no-ops.
+Re-running the baseline eval after the patch reproduces rank-1 98.63 %
+(431/437), TAR@1e-3 97.71, EER 0.69 %, AUC 0.9995 and F1 0.9466 to the last
+digit.
+
+Recovery: the replacement commits are preserved as branch `review-fixes`; `main`
+is restored to the full history with the fixes applied on top.

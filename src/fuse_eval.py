@@ -64,7 +64,11 @@ def main():
                 "probe/gallery order differs between score files"
         names.append(Path(s).name.replace(".scores.npz", "").replace("eval_", ""))
         js = Path(s).with_suffix("").with_suffix(".json")
-        totals.append(json.load(open(js))["n_probes_total"] if js.exists() else len(p_ids))
+        if js.exists():
+            with open(js) as f:
+                totals.append(json.load(f)["n_probes_total"])
+        else:
+            totals.append(len(p_ids))
 
     n_total = max(totals)
     out = {"components": {n: summarise(m, p_ids, g_ids, n_total, args.threshold)

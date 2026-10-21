@@ -28,7 +28,8 @@ def main():
     print("$", " ".join(cmd), flush=True)
     subprocess.run(cmd, check=True, cwd=HERE)
 
-    rows = list(csv.DictReader(open(out)))
+    with open(out) as f:
+        rows = list(csv.DictReader(f))
     assert rows, "no rows written"
     assert set(rows[0]) == {"probe", "predicted_id", "score", "quality", "match"}, rows[0]
     n_ok = sum(r["match"] == "True" for r in rows)

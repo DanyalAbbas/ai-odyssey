@@ -65,6 +65,8 @@ def read_pairs(path: Path):
 
 def gallery_from_dirs(root: Path):
     """Return {image_path: identity} for the standard nested layout."""
+    if not root.is_dir():
+        sys.exit(f"Gallery root not found or not a directory: {root}")
     mapping = {}
     for d in sorted(p for p in root.iterdir() if p.is_dir()):
         for img in list_images(d):
@@ -93,7 +95,11 @@ def gallery_from_index(index: Path, root: Path):
 
 
 def key_for(path: Path, root: Path, flat: bool) -> str:
-    return path.name if flat else str(path.relative_to(root))
+    """Return relative path as string with forward slashes for cross-platform compatibility."""
+    if flat:
+        return path.name
+    # Normalize path separators to forward slashes for CSV portability across platforms
+    return str(path.relative_to(root)).replace("\\", "/")
 
 
 def main():

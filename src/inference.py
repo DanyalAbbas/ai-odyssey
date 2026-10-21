@@ -21,17 +21,27 @@ DEFAULT_MODEL = "buffalo_l"
 DET_SIZE = (640, 640)
 DET_PAD_RETRY = 0.3   # reflected border fraction when no face is found
 EMB_DIM = 512
+EPSILON = 1e-12  # small constant to prevent division by zero in normalization
 _HERE = Path(__file__).resolve().parent
 _ROOT = _HERE.parent
 
 
 def _asset(name: str) -> str:
-    """Locate a weight file whether the tree is the repo or the submission zip."""
-    for base in (_ROOT / "models", _ROOT / "submit" / "models", _HERE, _HERE / "models"):
+    """Locate a weight file whether the tree is the repo or the submission zip.
+
+    Searches multiple locations and raises FileNotFoundError with all attempted
+    paths if the asset cannot be found anywhere.
+    """
+    search_locations = (_ROOT / "models", _ROOT / "submit" / "models", _HERE, _HERE / "models")
+    for base in search_locations:
         p = base / name
         if p.exists():
             return str(p)
-    return str(_ROOT / "models" / name)
+    # Asset not found; raise with helpful error message listing all searched locations
+    locations_str = "\n  ".join(str(base / name) for base in search_locations)
+    raise FileNotFoundError(
+        f"Model weight file '{name}' not found. Searched:\n  {locations_str}"
+    )
 
 
 DEFAULT_PAD_MODELS = [_asset("minifasnet_v2.onnx"), _asset("minifasnet_v1se.onnx")]
@@ -97,7 +107,7 @@ class FacePipeline:
         nose = kps[2]
         dx = nose[0] - eye_mid[0]
         # Normalize by IOD
-        yaw_approx = abs(dx) / (iod + 1e-6) * 90  # rough degrees
+        yaw_approx = abs(dx) / (iod + EPSILON) * 90  # rough degrees
         if yaw_approx > max_yaw:
             return False, f"yaw_{yaw_approx:.0f}"
 
@@ -174,13 +184,13 @@ class FacePipeline:
                     emb = face.embedding
                 if emb is None:
                     raise RuntimeError("no recogniser available to embed this face")
-                emb = emb / (np.linalg.norm(emb) + 1e-12)
+                emb = emb / (np.linalg.norm(emb) + EPSILON)
             return emb
         crop = face_align.norm_crop(img, landmark=face.kps, image_size=112)
         rgb = cv2.cvtColor(crop, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
         x = ((rgb - 0.5) / 0.5).transpose(2, 0, 1)[None]
         out = self.sess.run(None, {self.input_name: x})[0][0]
-        return out / (np.linalg.norm(out) + 1e-12)
+        return out / (np.linalg.norm(out) + EPSILON)
 
     def get_faces(self, img, quality_filter=True, gate_pad=True, trace=None):
         """Returns list of (face_obj, embedding, quality_reason).
@@ -238,15 +248,15 @@ class FacePipeline:
     # ---------- Matching ----------
     @staticmethod
     def cosine(a, b):
-        return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-12))
+        return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + EPSILON))
 
     def match(self, probe_emb, gallery_embs, gallery_ids, threshold=0.4):
         """1:N match. Returns (best_id, best_score, is_match)."""
         if probe_emb is None or len(gallery_embs) == 0:
             return None, 0.0, False
         gallery = np.array(gallery_embs)
-        gallery = gallery / (np.linalg.norm(gallery, axis=1, keepdims=True) + 1e-12)
-        probe = probe_emb / (np.linalg.norm(probe_emb) + 1e-12)
+        gallery = gallery / (np.linalg.norm(gallery, axis=1, keepdims=True) + EPSILON)
+        probe = probe_emb / (np.linalg.norm(probe_emb) + EPSILON)
         scores = gallery @ probe
         best_idx = int(np.argmax(scores))
         best_score = float(scores[best_idx])
@@ -259,6 +269,8 @@ def build_gallery(pipeline, gallery_dir, quality_filter=True):
     Expected structure: gallery_dir/<identity>/<image>.jpg
     """
     gallery_dir = Path(gallery_dir)
+    if not gallery_dir.is_dir():
+        raise FileNotFoundError(f"Gallery directory not found or not a directory: {gallery_dir}")
     embs, ids = [], []
     for person_dir in sorted(gallery_dir.iterdir()):
         if not person_dir.is_dir():
@@ -274,7 +286,7 @@ def build_gallery(pipeline, gallery_dir, quality_filter=True):
         if person_embs:
             # Quality-weighted average (simple: unweighted mean of normalized embs)
             mean_emb = np.mean(person_embs, axis=0)
-            mean_emb = mean_emb / (np.linalg.norm(mean_emb) + 1e-12)
+            mean_emb = mean_emb / (np.linalg.norm(mean_emb) + EPSILON)
             embs.append(mean_emb)
             ids.append(pid)
     return embs, ids

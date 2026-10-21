@@ -13,7 +13,8 @@ def main(paths):
         if not Path(p).exists():
             print(f"(missing {p})")
             continue
-        d = json.load(open(p))
+        with open(p) as f:
+            d = json.load(f)
         pad = d.get("pad") or {}
         rows.append({
             "model": d.get("config", {}).get("model", Path(p).stem),
