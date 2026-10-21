@@ -302,6 +302,42 @@ def evaluate_rank1(model, ds, device, batch=64):
     return float((pred == Y).mean())
 
 
+def resolve_data_root(requested: str) -> Path:
+    """Locate the corpus, tolerating how Kaggle names the mount.
+
+    Kaggle mounts a dataset under /kaggle/input/<slug>/, and the mount is absent
+    when the dataset version was still processing at push time. Falling back to
+    any */bench_train and printing what *is* mounted turns a bare "missing
+    dataset" into a diagnosable log line.
+    """
+    root = Path(requested)
+    if root.is_dir():
+        return root
+    for cand in sorted(Path("/kaggle/input").glob("*/bench_train")):
+        if cand.is_dir():
+            print(f"data root {root} missing; using {cand}", flush=True)
+            return cand
+    print(f"missing dataset: {root}", flush=True)
+    inputs = Path("/kaggle/input")
+    if inputs.is_dir():
+        print("mounted inputs:", flush=True)
+        for p in sorted(inputs.iterdir()):
+            print(f"  {p}", flush=True)
+    raise SystemExit(2)
+
+
+def resolve_ckpt(requested: str) -> Path:
+    """Same idea for the AdaFace checkpoint dataset."""
+    root = Path(requested)
+    if root.is_file():
+        return root
+    for cand in sorted(Path("/kaggle/input").glob("*/adaface_ir50_ms1mv2.ckpt")):
+        if cand.is_file():
+            print(f"checkpoint {root} missing; using {cand}", flush=True)
+            return cand
+    raise SystemExit(f"missing checkpoint: {root}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data-root", default="/kaggle/input/techfest-pak-train-faces/bench_train")
@@ -320,9 +356,8 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device: {device}", flush=True)
 
-    data_root = Path(args.data_root)
-    if not data_root.exists():
-        raise SystemExit(f"missing dataset: {data_root}")
+    data_root = resolve_data_root(args.data_root)
+    ckpt = resolve_ckpt(args.ckpt)
 
     ds = FaceDataset(data_root, train=True, veil_p=args.veil_p)
     print(f"train: {len(ds)} crops / {len(ds.classes)} identities", flush=True)
@@ -343,7 +378,7 @@ def main():
     val_ds.targets = [ds.targets[i] for i in sorted(val_idx)]
     print(f"  {len(train_ds)} train / {len(val_ds)} held-out images", flush=True)
 
-    net = load_backbone(Path(args.ckpt), device)
+    net = load_backbone(ckpt, device)
     head = ArcFace(512, len(ds.classes)).to(device)
     freeze_bn(net)
 
