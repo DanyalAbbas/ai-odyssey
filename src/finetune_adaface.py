@@ -302,27 +302,51 @@ def evaluate_rank1(model, ds, device, batch=64):
     return float((pred == Y).mean())
 
 
-def resolve_data_root(requested: str) -> Path:
-    """Locate the corpus, tolerating how Kaggle names the mount.
+def _input_tree(limit: int = 60) -> str:
+    """Render the first few levels of /kaggle/input for failure logs."""
+    root = Path("/kaggle/input")
+    if not root.is_dir():
+        return "  (no /kaggle/input)"
+    lines, seen = [], 0
+    for p in sorted(root.rglob("*")):
+        if len(p.relative_to(root).parts) > 3:
+            continue
+        lines.append(f"  {p}")
+        seen += 1
+        if seen >= limit:
+            lines.append("  ...")
+            break
+    return "\n".join(lines) or "  (empty)"
 
-    Kaggle mounts a dataset under /kaggle/input/<slug>/, and the mount is absent
-    when the dataset version was still processing at push time. Falling back to
-    any */bench_train and printing what *is* mounted turns a bare "missing
-    dataset" into a diagnosable log line.
+
+def _locate(name: str, want_dir: bool) -> Path | None:
+    """Find a file/dir by name anywhere under /kaggle/input.
+
+    Kaggle has used both /kaggle/input/<slug>/ and the nested
+    /kaggle/input/datasets/<owner>/<slug>/ layout; searching by name
+    covers both without guessing which one the runner picked.
     """
+    root = Path("/kaggle/input")
+    if not root.is_dir():
+        return None
+    for p in sorted(root.rglob(name)):
+        if p.is_dir() if want_dir else p.is_file():
+            return p
+    return None
+
+
+def resolve_data_root(requested: str) -> Path:
+    """Locate the corpus, tolerating how Kaggle names the mount."""
     root = Path(requested)
     if root.is_dir():
         return root
-    for cand in sorted(Path("/kaggle/input").glob("*/bench_train")):
-        if cand.is_dir():
-            print(f"data root {root} missing; using {cand}", flush=True)
-            return cand
+    found = _locate("bench_train", want_dir=True)
+    if found is not None:
+        print(f"data root {root} missing; using {found}", flush=True)
+        return found
     print(f"missing dataset: {root}", flush=True)
-    inputs = Path("/kaggle/input")
-    if inputs.is_dir():
-        print("mounted inputs:", flush=True)
-        for p in sorted(inputs.iterdir()):
-            print(f"  {p}", flush=True)
+    print("mounted inputs:", flush=True)
+    print(_input_tree(), flush=True)
     raise SystemExit(2)
 
 
@@ -331,11 +355,14 @@ def resolve_ckpt(requested: str) -> Path:
     root = Path(requested)
     if root.is_file():
         return root
-    for cand in sorted(Path("/kaggle/input").glob("*/adaface_ir50_ms1mv2.ckpt")):
-        if cand.is_file():
-            print(f"checkpoint {root} missing; using {cand}", flush=True)
-            return cand
-    raise SystemExit(f"missing checkpoint: {root}")
+    found = _locate("adaface_ir50_ms1mv2.ckpt", want_dir=False)
+    if found is not None:
+        print(f"checkpoint {root} missing; using {found}", flush=True)
+        return found
+    print(f"missing checkpoint: {root}", flush=True)
+    print("mounted inputs:", flush=True)
+    print(_input_tree(), flush=True)
+    raise SystemExit(2)
 
 
 def main():

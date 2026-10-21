@@ -1,6 +1,6 @@
 # TechFest Face Recognition Challenge — Final Report
 
-**Team:** [Team Name]
+**Team:** Mamdani
 **Institution:** Department of CS&IT, NEDUET
 **Date:** October 2026
 **Competition:** TechFest — Pakistani Context Face Recognition
