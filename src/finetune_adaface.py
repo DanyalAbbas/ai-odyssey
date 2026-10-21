@@ -449,10 +449,15 @@ def main():
     val_rank1 = evaluate_rank1(net, val_ds, device)
     print(f"held-out-image rank-1 (fit check): {val_rank1:.4f}", flush=True)
 
-    # ---------------- export ----------------
+    # Save weights before export: the ONNX is the artefact we score, but the
+    # state dict is what lets a future run resume without retraining.
     net.eval()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    torch.save({k: v.cpu() for k, v in net.state_dict().items()},
+               out / "fine_tuned_adaface_ir50_sd.pt")
+
+    # ---------------- export ----------------
     onnx_path = out / "fine_tuned_adaface_ir50.onnx"
     dummy = torch.randn(1, 3, 112, 112, device=device)
     try:                       # torch >= 2.9 defaults to the dynamo exporter
@@ -466,18 +471,20 @@ def main():
                           dynamic_axes={"input": {0: "batch"}, "embedding": {0: "batch"}})
     print(f"exported {onnx_path} ({onnx_path.stat().st_size/1e6:.0f} MB)", flush=True)
 
-    # parity check
-    import onnxruntime as ort
-    sess = ort.InferenceSession(str(onnx_path), providers=["CPUExecutionProvider"])
-    with torch.no_grad():
-        torch_out = net(dummy).cpu().numpy()[0]
-    onnx_out = sess.run(None, {"input": dummy.cpu().numpy()})[0][0]
-    cos = float(np.dot(torch_out, onnx_out) /
-                (np.linalg.norm(torch_out) * np.linalg.norm(onnx_out)))
-    print(f"onnx parity cosine: {cos:.6f}", flush=True)
-
-    torch.save({k: v.cpu() for k, v in net.state_dict().items()},
-               out / "fine_tuned_adaface_ir50_sd.pt")
+    # parity check (onnxruntime is not installed in every Kaggle image)
+    try:
+        import onnxruntime as ort
+    except ImportError:
+        cos = None
+        print("onnxruntime not installed; skipping parity check", flush=True)
+    else:
+        sess = ort.InferenceSession(str(onnx_path), providers=["CPUExecutionProvider"])
+        with torch.no_grad():
+            torch_out = net(dummy).cpu().numpy()[0]
+        onnx_out = sess.run(None, {"input": dummy.cpu().numpy()})[0][0]
+        cos = float(np.dot(torch_out, onnx_out) /
+                    (np.linalg.norm(torch_out) * np.linalg.norm(onnx_out)))
+        print(f"onnx parity cosine: {cos:.6f}", flush=True)
 
     report = {"identities": len(ds.classes), "crops": len(ds),
               "train_images": len(train_ds), "heldout_images": len(val_ds),

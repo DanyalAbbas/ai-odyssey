@@ -11,7 +11,7 @@
 
 This report presents an end-to-end face recognition pipeline designed for Pakistani-context deployment. The system covers face detection (SCRFD-10GF), alignment (5-pt ArcFace template), quality gating (blur, IOD, pose), embedding extraction (ArcFace R50 / R100 / AdaFace), liveness gating (MiniFASNet), and matching (cosine similarity). Evaluation on the Pakistani Public Figures dataset (23 identities, 437 probe images) achieved **98.63% end-to-end Rank-1** (431/437) with **0% failure-to-enrol**, EER 0.69%, and AUC 0.9995.
 
-The decisive gains came from detection, not from a larger model: two SCRFD failure modes — tight headshot crops producing zero detections, and small source images upscaled until the subject's face exceeded the detector's size range — together accounted for a rise from 73.0% to 98.6%. Four embedders (buffalo_l R50, antelopev2 R100, AdaFace IR-50/IR-101) land within one probe of each other, i.e. statistically tied. Fine-tuning on Kaggle GPU was run and **rejected** on a pre-registered rule: it reached 41.7% Rank-1 versus 97.9% for the pretrained model on the same held-out split. Anti-spoofing is included and evaluated separately on NUAA (1.3% APCER / 1.3% BPCER at the 0.02 operating point).
+The decisive gains came from detection, not from a larger model: two SCRFD failure modes — tight headshot crops producing zero detections, and small source images upscaled until the subject's face exceeded the detector's size range — together accounted for a rise from 73.0% to 98.6%. Four embedders (buffalo_l R50, antelopev2 R100, AdaFace IR-50/IR-101) land within one probe of each other, i.e. statistically tied. Fine-tuning on Kaggle GPU was run and **rejected** on a pre-registered rule: it reached 41.7% Rank-1 versus 97.9% for the pretrained model on the same held-out split. A second, compliant fine-tune on the self-collected 98-identity corpus failed the same rule (98.17% vs 98.63% rank-1; TAR@1e-3 95.88 vs 97.71), so the shipped embedder remains stock buffalo_l. Anti-spoofing is included and evaluated separately on NUAA (1.3% APCER / 1.3% BPCER at the 0.02 operating point).
 
 ---
 
@@ -392,6 +392,7 @@ identity, cosine similarity, threshold 0.4.
 | FTE (failure to enroll) | **0.0%** | — |
 | **End-to-end rank-1** | **98.63%** | [97.48, 99.54] |
 | Rank-1 among enrolled | 98.63% | [97.48, 99.54] |
+| Rank-1 at match threshold 0.40 | **98.40%** (430/437) | — |
 | TAR@FAR=1e-3 | 97.71% | — |
 | TAR@FAR=1e-4 | 29.29% | — |
 | EER | **0.69%** | — |
@@ -403,7 +404,9 @@ identity, cosine similarity, threshold 0.4.
 | Identities with perfect rank-1 | 21 / 23 | — |
 
 **The headline number is the end-to-end one: 98.63%, up from 73.0% before the
-detection fixes.** The embedder was never the bottleneck. Two SCRFD failure modes
+detection fixes.** End-to-end here means after detection and enrolment, not
+after the match threshold: the thresholded figure is reported separately below.
+The embedder was never the bottleneck. Two SCRFD failure modes
 did all the damage: 109 probes failed to enrol because tight headshots give the
 detector no context, and a further set were matched against *the wrong face*
 because a small background face was returned instead of the subject (§4.1).
@@ -423,6 +426,20 @@ identity (§9).
 TAR@FAR=1e-4 is low (29.3%) but is estimated from only 437×23 ≈ 10k impostor
 comparisons — at 1e-4 that is a single-digit event count, so the number is
 reported for completeness, not as a reliable operating point.
+
+**Shipped-package check.** Every number above comes from the evaluation harness
+operating on cached crops. The artefact organisers run is `submit/predict.py`,
+so it was executed end to end on the same 437 probes: **430/437 = 98.40 %** at
+the 0.40 match threshold, two probes returned as `unknown` and five assigned to
+the wrong identity (`results/final_predictions.csv`, `results/final_check.json`).
+The harness reports 429/437 at the same threshold. The single-probe difference
+is a harness artefact, not a pipeline change: for one probe whose face sits
+partly outside a reflected-border retry, the harness clips the quality box to
+empty and skips the blur test, accepting a face that the shipped quality gate
+rejects; the shipped path then salvages the larger face and scores 0.75 instead
+of 0.35. Harness numbers are left unchanged across every ablation so the
+comparisons stay like-for-like; the shipped figure is the one that describes the
+deliverable.
 
 ### 6.2 Fine-Tuning Ablation (ResNet-50 + AdaFace head on LFW)
 
@@ -578,15 +595,29 @@ it.
 |---|---|---|---|---|
 | buffalo_l R50 (shipped baseline) | 98.63 % (431/437) | 97.71 | 0.69 % | 0.791 |
 | AdaFace IR-50, pretrained (reimplementation check) | 98.40 % (430/437) | 97.03 | 0.92 % | 0.768 |
+| AdaFace IR-50, fine-tuned on the collected corpus | 98.17 % (429/437) | 95.88 | 1.37 % | 0.765 |
 
-**Status of the compliance run.** The job is built and pushed
-(`danyalabbas1/techfest-pakistan-finetune`, 40 epochs, one T4), and at the time
-of writing it is queued for a GPU. It is deliberately additive: the shipped
-submission and every number in this report are produced without it. When the
-kernel completes, its row is appended to the table above and the rule below is
-applied unchanged. If the queue does not clear before the deadline, the run is
-reported as not executed — the baseline stands, and this paragraph is the record
-of why.
+**Verdict: not promoted.** The run completed all 40 epochs on one T4 (10–11 s
+per epoch over 2,034 training crops, 196 held out). The held-out fit check
+reached 100 % rank-1, which is the overfitting warning rather than a result: 98
+identities are enough to memorise, not enough to generalise. On the benchmark it
+loses two probes and 1.8 points of TAR@1e-3, so the pre-registered rule keeps
+`buffalo_l` in the submission.
+
+The loss is localised: both lost probes are in the `low` quality bucket
+(22/24 vs 24/24), while `ok`, `blur`, `yaw` and `ok_padded` are unchanged. That
+is the expected failure mode. The corpus is clean, aligned and mostly
+high-resolution, so 2,034 crops cannot teach the network anything about the
+blurred or tiny probes that the MS1MV2 prior already handles; all six residual
+errors of the baseline are detection- or quality-dominated, not embedding
+errors. F1 at the 0.40 operating point moves slightly the other way
+(0.9508 vs 0.9466) because the genuine/impostor gap narrows, but that is a
+threshold artefact, not the promotion criterion, and it is not used to rescue a
+run that lost rank-1 and TAR.
+
+The honest summary is that the compliance requirement was executed end to end —
+collection, cleaning, training, export, benchmark — and the result was negative.
+That is the outcome the rule was written to make possible.
 
 **Promotion rule (fixed before the run):** the fine-tuned model replaces
 buffalo_l only if it does not lose rank-1 *and* does not lose TAR@1e-3. A tie
@@ -890,6 +921,11 @@ probes are output as `unknown`, which counts as wrong in an end-to-end score.
 to 0.35 for 0.23 points of FRR, and it costs two correct probes. If the hidden
 benchmark is strictly closed-set (every probe has a mate), answering below the
 threshold is never wrong and `--threshold 0` recovers those two probes.
+
+The shipped CLI measures 430/437 = 98.40 % at 0.40, one probe above this table.
+The difference is the harness quality-clip artefact described in §6.1, not a
+different operating point; the sweep above is left unchanged so every row stays
+comparable.
 
 ---
 

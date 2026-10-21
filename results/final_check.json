@@ -1,0 +1,14 @@
+{
+  "command": "submit/predict.py --gallery data/pak_fig/gallery --probe data/pak_fig/probe",
+  "probes": 437,
+  "rank1_at_threshold_0.40": 0.9839816933638444,
+  "n_correct": 430,
+  "n_unknown": 2,
+  "n_wrong_identity": 5,
+  "quality": {
+    "ok": 295,
+    "fallback_quality": 142
+  },
+  "wall_clock_s": 1147,
+  "note": "Measured with the shipped package, not the evaluation harness. The harness reports 429/437 at the same threshold because its quality clip skips the blur test for one face outside the padded frame; see REPORT.md 6.1."
+}

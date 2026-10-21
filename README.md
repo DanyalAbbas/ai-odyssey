@@ -121,6 +121,9 @@ Honest negatives, all documented in the report:
 - **Fine-tuning on LFW** (Kaggle T4, 12 epochs, AdaFace head): 41.7 % rank-1 on
   held-out LFW identities vs 98.6 % for the pretrained pipeline — not promoted
   under a pre-registered rule (§6.2).
+- **Fine-tuning on the self-collected corpus** (98 identities, 2,230 crops,
+  40 epochs): 98.17 % vs 98.63 % rank-1, TAR@1e-3 95.88 vs 97.71 — failed the
+  same rule, and the two lost probes are both low-quality captures (§6.6.4).
 - **Score fusion of four embedders:** 98.17 %, *below* the best single model,
   because the residual errors are correlated (§6.5).
 - **Larger embedders (R100, IR-101):** statistically tied with R50 — one probe

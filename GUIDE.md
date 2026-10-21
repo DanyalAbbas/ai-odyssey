@@ -12,7 +12,7 @@ number comes from, and what is deliberately *not* in git. The written report is
 | Pipeline + submission package | **done** — `submit/selftest.py` passes offline |
 | Public benchmark (23 IDs, 437 probes) | **done** — 98.63 % rank-1, EER 0.69 % |
 | Report, ablations, fairness, PAD | **done** |
-| Compliance fine-tune on the self-collected corpus | **built and pushed to Kaggle; queued for a GPU** (§6.6.4) |
+| Compliance fine-tune on the self-collected corpus | **run completed, rejected** — 98.17 % vs 98.63 % rank-1 (§6.6.4) |
 
 Nothing in the submission depends on the queued run. If it completes, its result
 is appended and the pre-registered promotion rule in §6.6.4 is applied; if it
@@ -81,6 +81,7 @@ All commands are run from the repo root. `results/*.json` is committed evidence;
 | Near-duplicate audit | `uv run python src/check_duplicates.py` | `duplicate_audit.json` |
 | Per-identity / gender tables | `uv run python src/group_eval.py --eval results/eval_buffalo_v2.json` | `groups_buffalo_v2.json` |
 | Figures | `uv run python src/figures.py --run results/eval_buffalo_v2.json` | `results/figures/` |
+| Shipped CLI, end to end | `uv run python submit/predict.py --gallery data/pak_fig/gallery --probe data/pak_fig/probe --output results/final_predictions.csv` | `results/final_check.json` |
 
 The full command sequences used for the sweep are in
 `experiments/run_final.sh` and `experiments/run_v2_models.sh`, with their logs
@@ -105,7 +106,7 @@ The local checkout a reviewer receives has all of these in place, so every
 command above runs as written. A fresh clone can reproduce the code path and the
 self-test, but needs the weights and data dropped in first.
 
-## The self-collected corpus and the queued fine-tune
+## The self-collected corpus and the fine-tune
 
 The brief asks teams to collect data and fine-tune, so we did:
 
@@ -118,15 +119,18 @@ The brief asks teams to collect data and fine-tune, so we did:
    reconstructed and validated at 98.40 % first) with an ArcFace head, frozen
    BatchNorm, and synthetic hijab/niqab/mask occlusion on aligned crops.
 4. **Push** — `src/push_finetune.py` uploads the corpus as a private Kaggle
-   dataset and the training script as a kernel (40 epochs, one T4).
-5. **Evaluate** — when the kernel finishes:
-   `OMP_NUM_THREADS=8 .venv/bin/python src/evaluate_pak.py --model onnx --onnx <export>.onnx --pad --pad-threshold 0.05 --output results/eval_ft_v1.json`
-   (crops are cached, so this only re-embeds: ~2 min).
+   dataset and the training script as a kernel (40 epochs, one T4). Kaggle now
+   mounts datasets under `/kaggle/input/datasets/<owner>/<slug>/`, so the script
+   searches by name rather than assuming a path.
+5. **Evaluate** — the run completed 40 epochs (~11 s/epoch) and exported a
+   167 MB ONNX model; it was scored with
+   `OMP_NUM_THREADS=8 .venv/bin/python src/evaluate_pak.py --model onnx --onnx <export>.onnx --pad --pad-threshold 0.05 --output results/eval_ft_v1.json`.
 
 The promotion rule was written *before* the run: replace the baseline only if
 rank-1 and TAR@1e-3 both do not drop; a tie goes to the fine-tuned model; any
-loss keeps the baseline. The earlier LFW fine-tune failed this rule at 41.7 %
-and is reported as a negative result (§6.2) rather than hidden.
+loss keeps the baseline. It lost both (98.17 % vs 98.63 % rank-1, TAR 95.88 vs
+97.71), so the baseline ships and the run is reported as a negative result
+(§6.6.4). The earlier LFW fine-tune failed the same rule at 41.7 % (§6.2).
 
 ## How the pieces fit
 

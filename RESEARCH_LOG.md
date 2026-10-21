@@ -656,3 +656,41 @@ digit.
 
 Recovery: the replacement commits are preserved as branch `review-fixes`; `main`
 is restored to the full history with the fixes applied on top.
+
+## 2026-10-21 — Compliance fine-tune result (negative)
+
+Kaggle now mounts datasets at `/kaggle/input/datasets/<owner>/<slug>/`, not
+`/kaggle/input/<slug>/`; two runs died on the old assumption before the resolver
+searched by name. The third run trained all 40 epochs on a T4 (2,034 train /
+196 held-out crops, 10–11 s/epoch), reached 100 % on the held-out images, and
+exported a 167 MB ONNX. The kernel reports ERROR only because its final parity
+check imports `onnxruntime`, which the image does not ship; the export had
+already completed and downloaded. The script now saves the state dict before
+export and skips parity when the module is absent.
+
+Benchmark result (437 probes, same crops as every other run):
+
+| Model | Rank-1 | TAR@1e-3 | EER | Genuine mean |
+|---|---|---|---|---|
+| buffalo_l R50 | 98.63 % (431) | 97.71 | 0.69 % | 0.791 |
+| AdaFace IR-50 + corpus fine-tune | 98.17 % (429) | 95.88 | 1.37 % | 0.765 |
+
+The pre-registered rule required no loss on either rank-1 or TAR@1e-3, so the
+fine-tune is **not promoted** and buffalo_l ships. Both lost probes are in the
+`low` quality bucket (22/24 vs 24/24); every other quality bucket is unchanged.
+That is the expected failure: the corpus is clean and aligned, while the
+benchmark's residual errors are blurred/tiny captures that the MS1MV2 prior
+already handles. F1 at 0.40 rose slightly (0.9508 vs 0.9466) because the
+genuine–impostor gap narrowed; it is a threshold artefact, not a promotion case.
+
+## 2026-10-21 — Shipped-package verification
+
+`submit/predict.py` was run end to end on the same 437 probes:
+**430/437 = 98.40 %** at the 0.40 threshold (`results/final_predictions.csv`),
+two probes below threshold and five wrong-identity. The harness reports 429/437
+at the same threshold. The one-probe gap is a harness artefact: for a face lying
+partly outside a reflected-border retry, `evaluate_pak.quality` clips the box to
+empty and skips the blur test, so it accepts a face that `inference.quality_ok`
+rejects; the shipped path then salvages the larger face (score 0.75 vs 0.35).
+The harness numbers are left unchanged across all ablations for comparability;
+the report now states both, and the shipped figure is the deliverable's number.
