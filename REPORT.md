@@ -366,8 +366,10 @@ covers the three input shapes the protocol could take:
 
 Assumptions that could break it, stated explicitly:
 
-- **Unknown size.** At 0.3 s/image (R50, 8 threads) a 10k-image benchmark takes
-  ~50 min; R100 is ~3× slower. R50 is the packaged default for that reason.
+- **Unknown size.** At 0.9 s/image measured on our 8-thread CPU (R50, no PAD),
+  a 10k-image benchmark takes ~2.5 h; R100 is ~3× slower. The earlier 0.3 s
+  estimate was optimistic for this hardware. R50 is the packaged default for
+  that reason.
 - **No network at eval time.** Weights are vendored under `submit/models/`.
 - **Single-face or subject-in-scene probes.** Multi-face images resolve to the
   largest *quality-passing* face, which is the standard convention but not
@@ -498,9 +500,10 @@ whose failures are analysed in §9.
 ### 6.5 Embedder Comparison
 
 All four embedders were run on the **same corrected crops**, so this isolates the
-recogniser. Rank-1 is on 437 probes / 23 identities.
+recogniser. Rank-1 is on 437 probes / 23 identities. *Impostor* is the mean
+impostor cosine; *Gap* is genuine mean minus impostor mean.
 
-| Model | Rank-1 | 95% CI | TAR@1e-3 | TAR@1e-4 | EER | AUC | Impostor mean | Genuine−impostor gap |
+| Model | Rank-1 | 95% CI | TAR@1e-3 | TAR@1e-4 | EER | AUC | Impostor | Gap |
 |---|---|---|---|---|---|---|---|---|
 | buffalo_l R50 | 98.63 % | [97.5, 99.5] | 97.71 | 29.29 | 0.69 % | 0.9995 | 0.0594 | 0.737 |
 | antelopev2 R100 | **98.86 %** | [97.7, 99.8] | 97.94 | 35.24 | 0.46 % | 0.9996 | 0.0542 | 0.761 |

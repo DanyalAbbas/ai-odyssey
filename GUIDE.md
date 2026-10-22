@@ -14,9 +14,14 @@ number comes from, and what is deliberately *not* in git. The written report is
 | Report, ablations, fairness, PAD | **done** |
 | Compliance fine-tune on the self-collected corpus | **run completed, rejected** — 98.17 % vs 98.63 % rank-1 (§6.6.4) |
 
-Nothing in the submission depends on the queued run. If it completes, its result
-is appended and the pre-registered promotion rule in §6.6.4 is applied; if it
-does not, the baseline stands and the report says so.
+Nothing in the submission depends on the fine-tune. It ran to completion and was
+**rejected** by the pre-registered rule in §6.6.4 (98.17 % vs 98.63 % rank-1;
+TAR@1e-3 95.88 vs 97.71), so the baseline ships.
+
+For a presentation, [`PRESENTATION.pdf`](PRESENTATION.pdf) is a 16-slide deck;
+[`presentation/NOTES.md`](presentation/NOTES.md) has the per-slide script, a demo
+walkthrough and Q&A answers. Rebuild with
+`.venv/bin/python presentation/build.py`.
 
 ## What the system does
 

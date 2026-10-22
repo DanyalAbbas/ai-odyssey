@@ -6,7 +6,9 @@ matching, with a liveness gate and a veiled-face evaluation.
 **Headline result: 98.63 % rank-1 end-to-end (431/437 probes, 23 identities, 0 %
 failure-to-enrol), EER 0.69 %, AUC 0.9995.** The final report is
 [`REPORT.md`](REPORT.md); the research trail is
-[`RESEARCH_LOG.md`](RESEARCH_LOG.md).
+[`RESEARCH_LOG.md`](RESEARCH_LOG.md). For the presentation, use
+[`PRESENTATION.pdf`](PRESENTATION.pdf) (16 slides) with the speaker script and
+Q&A prep in [`presentation/NOTES.md`](presentation/NOTES.md).
 
 **Reviewing the repo?** [`GUIDE.md`](GUIDE.md) is the short path: what to run,
 which command produced every reported number, what is deliberately not in git,
@@ -43,6 +45,7 @@ runtime.
 |---|---|
 | `submit/` | **The submission**: `predict.py`, `selftest.py`, vendored ONNX weights, `Dockerfile` |
 | `app/` | Gradio presentation UI (`demo.py`) |
+| `PRESENTATION.pdf`, `presentation/` | Slide deck, markdown source, build script, speaker notes |
 | `src/` | All pipeline, evaluation and experiment code (see below) |
 | `results/` | One JSON + score matrix per run, figures in `results/figures/` |
 | `experiments/` | Reproducible drivers (`run_final.sh`, `run_v2_models.sh`) and their logs |

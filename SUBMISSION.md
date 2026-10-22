@@ -69,8 +69,9 @@ Expected: 2 rows, both matched, `SELFTEST PASSED`.
 
 ## Known risks
 
-- **Runtime.** ~0.3 s/image on 8 CPU threads (R50). A 10k-image benchmark is
-  ~50 min. R100/AdaFace is ~3× slower.
+- **Runtime.** ~0.9 s/image measured on our 8 CPU threads (R50, no PAD), so a
+  10k-image benchmark is ~2.5 h. R100/AdaFace is ~3× slower. Run with more
+  threads if the host allows it.
 - **Protocol mismatch.** If the hidden task is neither 1:N nor a pairs CSV, the
   wrapper changes but the pipeline does not.
 - **Multi-face images.** Resolved to the largest quality-passing face.
